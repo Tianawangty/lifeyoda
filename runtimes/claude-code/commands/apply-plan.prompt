@@ -1,0 +1,6 @@
+Run `workflows/apply-daily-plan.workflow`.
+
+Only proceed after explicit user confirmation.
+
+Write the confirmed Daily Plan and confirmed planning-calendar blocks according to private config. Do not create a Daily Journal.
+

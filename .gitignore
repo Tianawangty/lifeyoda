@@ -1,0 +1,22 @@
+# Personal configuration and inputs — the single private directory.
+# Everything user-specific lives here: Notion IDs, calendar IDs, repo paths,
+# work-hour presets, personal notes. Nothing in here is ever committed.
+private/**
+!private/.gitkeep
+
+# Personal work records
+quality_reports/
+SESSION_REPORT.md
+
+# Local tool state
+.claude/settings.local.json
+.run/
+.cache/
+outputs/
+logs/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

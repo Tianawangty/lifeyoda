@@ -16,7 +16,7 @@ The three commands live in `.claude/commands/`, so they are available when Claud
 
 ```
 /daily        Morning Brief + Draft Day Plan   (read-only)
-/apply-plan   write the confirmed plan
+/apply-planner   write the confirmed plan
 /wrapup       reconcile and journal
 ```
 

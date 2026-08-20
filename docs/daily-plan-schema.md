@@ -1,6 +1,6 @@
 # Daily Plan Schema
 
-Daily Plan writes happen only in the apply-plan workflow after explicit confirmation.
+Daily Plan writes happen only in the apply-daily-plan workflow after explicit confirmation.
 
 Required behavior:
 

@@ -7,7 +7,7 @@ Initial scope:
 - Private config schema
 - Generic course task source interface
 - Morning Brief + Draft Day Plan workflow
-- Confirmed apply-plan workflow
+- Confirmed apply-daily-plan workflow
 - Wrapup journal workflow
 
 Next steps before public release:

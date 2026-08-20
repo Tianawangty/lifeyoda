@@ -17,4 +17,4 @@ Run the morning-brief-and-plan workflow. **This command writes nothing** — not
 
 Target date is today in the config timezone unless `$ARGUMENTS` names a date.
 
-Output exactly two sections — `# Morning Brief` and `# Draft Day Plan` — with a single round of questions between them, as specified in the workflow. When the user confirms the draft, tell them to run `/apply-plan`; do not write anything yourself.
+Output exactly two sections — `# Morning Brief` and `# Draft Day Plan` — with a single round of questions between them, as specified in the workflow. When the user confirms the draft, tell them to run `/apply-planner`; do not write anything yourself.

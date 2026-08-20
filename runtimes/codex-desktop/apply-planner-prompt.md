@@ -1,10 +1,10 @@
-Run the LifeYoda apply-plan workflow.
+Run the LifeYoda apply-daily-plan workflow.
 
 Repository path:
 <LifeYoda repository root — set this when you create the scheduled task>
 
 Use:
-- workflows/apply-daily-plan.workflow
+- workflows/apply-daily-plan.md
 - config/public.defaults.json
 - private/local.json
 - the confirmed Draft Day Plan from the current conversation

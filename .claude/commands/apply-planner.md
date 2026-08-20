@@ -3,7 +3,7 @@ description: Write a confirmed Draft Day Plan to the Notion Daily Plan row and m
 argument-hint: "[optional: date, defaults to the draft's date]"
 ---
 
-# /apply-plan
+# /apply-planner
 
 Run the apply-daily-plan workflow. **Only run after the user has confirmed a Draft Day Plan.**
 

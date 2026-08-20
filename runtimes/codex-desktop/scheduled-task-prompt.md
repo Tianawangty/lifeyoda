@@ -4,7 +4,7 @@ Repository path:
 <LifeYoda repository root — set this when you create the scheduled task>
 
 Use:
-- workflows/morning-brief-and-plan.workflow
+- workflows/morning-brief-and-plan.md
 - config/public.defaults.json
 - private/local.json if available
 - private/state.json if available
@@ -56,6 +56,6 @@ Return exactly:
 - Concrete checklist items.
 
 ## Needs confirmation
-- State that the plan has not been written to Notion or calendar, and that applying it requires the separate apply-plan workflow.
+- State that the plan has not been written to Notion or calendar, and that applying it requires the separate apply-daily-plan workflow.
 
 If no important items are found, the Morning Brief key items section should say: "No urgent items found."

@@ -4,7 +4,7 @@ Repository path:
 <LifeYoda repository root — set this when you create the scheduled task>
 
 Use:
-- workflows/wrapup-journal.workflow
+- workflows/wrapup-journal.md
 - templates/daily-journal-page.template
 - templates/daily-plan-page.template
 - config/public.defaults.json

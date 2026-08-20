@@ -170,7 +170,7 @@ Ask all of it in one message. Do not interrupt again.
 - Concrete checklist items, including carry-overs marked as such.
 
 ## Needs confirmation
-- Nothing has been written to Notion or any calendar. Run /apply-plan to write it.
+- Nothing has been written to Notion or any calendar. Run /apply-planner to write it.
 ```
 
 If nothing important surfaces, Key items reads: `No urgent items found.`

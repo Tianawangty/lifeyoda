@@ -18,11 +18,11 @@ Run from this repo directory (they are project-level slash commands).
 | Command | Reads | Writes |
 | --- | --- | --- |
 | `/daily` | `workflows/morning-brief-and-plan.md` | nothing |
-| `/apply-plan` | `workflows/apply-daily-plan.md` | one Notion Daily Plan row + planning-calendar blocks |
+| `/apply-planner` | `workflows/apply-daily-plan.md` | one Notion Daily Plan row + planning-calendar blocks |
 | `/wrapup` | `workflows/wrapup-journal.md` | Daily Plan status + one Daily Journal |
 | `/horizon` | horizon config, resolved like every private config | nothing |
 
-The sequence is always `/daily` → user confirms → `/apply-plan`, and `/wrapup` at end of day. `/daily` never writes; `/apply-plan` never runs without a confirmed draft in the same conversation.
+The sequence is always `/daily` → user confirms → `/apply-planner`, and `/wrapup` at end of day. `/daily` never writes; `/apply-planner` never runs without a confirmed draft in the same conversation.
 
 Verify config health with:
 
@@ -54,7 +54,7 @@ The three workflows form a loop with Notion as the source of truth and a single 
              → ONE round of questions
              → Draft Day Plan            (nothing written)
 
-/apply-plan  Notion Daily Plan row  +  planning calendar blocks
+/apply-planner  Notion Daily Plan row  +  planning calendar blocks
 
 /wrapup    Daily Plan Status → Done/Partial
            Daily Journal (icon ✅/📓, linked both ways)
@@ -66,7 +66,7 @@ Four facts that are not obvious from any single file:
 
 **2. Completion status is not on the calendar.** A calendar records what was *scheduled*. Whether it got *done* lives in the Daily Plan's `✅ Today's checklist` checkboxes and the Journal's `Not done → carry forward` section. The morning brief reads those two; the calendar is only corroboration (four blocks scheduled but three items checked is a gap worth naming).
 
-**3. Calendar dedupe reads the destination.** Before writing, `/apply-plan` lists the planning calendar for that date and compares on start time plus the `[project]` tag. No sync state is stored in Notion — no event id, no synced checkbox. This is why the naming protocol matters: the `[project]` tag is the dedupe anchor. The predecessor tool stored ids on tracker rows instead, which covered only tasks that happened to be tracker rows and went stale whenever an event was deleted by hand.
+**3. Calendar dedupe reads the destination.** Before writing, `/apply-planner` lists the planning calendar for that date and compares on start time plus the `[project]` tag. No sync state is stored in Notion — no event id, no synced checkbox. This is why the naming protocol matters: the `[project]` tag is the dedupe anchor. The predecessor tool stored ids on tracker rows instead, which covered only tasks that happened to be tracker rows and went stale whenever an event was deleted by hand.
 
 **4. Outlook lies about time zones.** `outlook_calendar_search` labels its times `UTC` but returns wall-clock strings that are already local. A class returning `12:35` with body text `08:35 AM` is an 08:35 EDT event. The config flags this with `returnsWallClockAsUtc: true`. Always render in the config timezone with the abbreviation shown.
 

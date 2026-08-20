@@ -18,6 +18,10 @@
     "maxFyiItems": 3,
     "avoidExhaustiveSearch": true
   },
+  "horizon": {
+    "lookaheadDays": 21,
+    "confidenceLevels": ["VERIFIED", "DERIVED", "INFERRED"]
+  },
   "naming": {
     "template": "{typeEmoji} [{project}] {verb}: {object}",
     "dedupeAnchor": "project + start time",

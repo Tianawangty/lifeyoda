@@ -1,4 +1,4 @@
-Run `workflows/morning-brief-and-plan.workflow`.
+Run `workflows/morning-brief-and-plan.md`.
 
 Claude Code runtime:
 - Read Google Calendar directly with the configured calendar connector.

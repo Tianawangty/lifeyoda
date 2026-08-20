@@ -1,3 +1,3 @@
-Run `workflows/wrapup-journal.workflow`.
+Run `workflows/wrapup-journal.md`.
 
 Read the configured Daily Plan, actuals, work logs, and active repo changes. Build the journal content from `templates/daily-journal-page.template`. Propose the wrapup batch first. Write only after explicit confirmation.

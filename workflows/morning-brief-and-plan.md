@@ -40,7 +40,7 @@ From that previous day, read:
 
 Completion status lives in those two places, not on the calendar. The calendar only records what was scheduled. Use it as corroboration: if four blocks were scheduled and only three checklist items are checked, say so rather than assuming.
 
-## Horizon
+## Lookahead
 
 Scan forward `sources.horizonDays`. Anything with a hard deadline inside `hardDeadlineHighlightDays` belongs in Key items; the rest goes to Later / FYI.
 
@@ -62,6 +62,23 @@ For each event with a location:
 - Otherwise reserve `travel.bufferMinutes` before and after, and say so explicitly in Fixed constraints.
 
 Never schedule work inside a travel buffer.
+
+### Horizon Layer
+
+Resolve the horizon config the same way as the local config, first hit wins: `$LIFEYODA_CONFIG`, `~/.lifeyoda/horizon.json`, `private/horizon.json`. If none resolves, skip this subsection silently — the horizon layer is optional. `config/horizon.schema.json` is the authority on its shape, and `docs/horizon-layer.md` explains the model.
+
+Pull two sets of milestones across every track:
+
+- **Past due** — `targetDate` is before the target date while `status` is anything other than `done`. These go to **Key items**. The dates decide this, not the `status` label: a milestone still marked `planned` two weeks after its target date is slipping regardless of what it says.
+- **Upcoming** — `targetDate` falls inside `lookaheadDays`, taken from the horizon config, otherwise `horizon.lookaheadDays` in the public defaults, otherwise 21. These go to **Later / FYI**.
+
+Name the track and the target date on every one. Where a slipping milestone appears in the `dependsOn` of something later, say what it blocks — a slip that costs one downstream milestone reads differently from one that costs six.
+
+Show a `DERIVED` or `INFERRED` hard deadline with its confidence label attached, the same way job deadline `confidenceMarkers` are reproduced verbatim. Never present either as settled.
+
+This subsection reads the horizon config. It never writes to it, and no milestone status is ever inferred from a calendar event.
+
+For the Draft Day Plan's Assumptions block, also compute this week's per-track budget: split the week's working hours across tracks in proportion to `weightPct`, and set each budget next to the effort actually spent so far this week. Recorded effort comes from the Daily Journals of the days already wrapped up — `Focus Hours` for the total and `Projects Touched` for which tracks those hours went to, both written by the wrapup workflow. A track at `weightPct: 0` gets no hours of its own; say which track it borrows from rather than rebalancing quietly. Where recorded effort is missing because a day was never wrapped up, say the number is partial instead of treating the gap as zero hours.
 
 ### Job Deadlines
 
@@ -138,6 +155,7 @@ Ask all of it in one message. Do not interrupt again.
 
 ## Assumptions
 - Work windows and protected blocks used, and anything the user did not answer.
+- This week's per-track time budget from the horizon `weightPct`, next to the effort actually recorded so far this week.
 
 ## Fixed constraints
 - Today's fixed events, in the config timezone, with travel buffers stated.

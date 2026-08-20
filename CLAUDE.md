@@ -20,6 +20,7 @@ Run from this repo directory (they are project-level slash commands).
 | `/daily` | `workflows/morning-brief-and-plan.md` | nothing |
 | `/apply-plan` | `workflows/apply-daily-plan.md` | one Notion Daily Plan row + planning-calendar blocks |
 | `/wrapup` | `workflows/wrapup-journal.md` | Daily Plan status + one Daily Journal |
+| `/horizon` | horizon config, resolved like every private config | nothing |
 
 The sequence is always `/daily` → user confirms → `/apply-plan`, and `/wrapup` at end of day. `/daily` never writes; `/apply-plan` never runs without a confirmed draft in the same conversation.
 
@@ -96,11 +97,10 @@ Schedule-table rows and calendar events use one format, defined in `naming.templ
 
 Owner-specific context for all of these — which institution, which tracker, which repos — lives in `private/NOTES.md`.
 
-**Long-horizon layer** — not built. The intent is to work backwards from a target completion date through quarter, month, week, and day, so daily plans inherit from a long-horizon schedule anchored on the organisation's published calendar. Building it requires deciding, together:
+**Long-horizon layer** — built. `/horizon` counts back from a terminal goal through hard deadlines and per-track milestones; `config/horizon.schema.json` fixes the shape, `docs/horizon-layer.md` explains the model, and `/daily` folds past-due milestones into Key items and upcoming ones into Later / FYI. Two questions the layer was going to settle are still open:
 
-- the horizon config shape (completion date, period bounds, milestones, hard deadlines)
 - whether the owner's project tracker becomes writable again, and whether a `Scheduled Date` property is reintroduced for cross-day scheduling — both were deliberately deferred to this layer
-- how a long-horizon deadline propagates down into `/daily` without drowning the top 3-5 signal
+- whether the per-track budget in the Draft Day Plan's Assumptions block holds up against recorded effort once several weeks of Journals exist to compare against
 
 **Repos not yet wired** — additional project repos are listed in `private/NOTES.md`. Each needs an entry in `sources.activeProject.secondary` and `sources.projectMapping`. One stale course mapping was dropped; the corresponding Notion multi-select option was left alone so historical journal rows stay intact.
 

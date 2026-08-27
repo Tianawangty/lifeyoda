@@ -302,7 +302,10 @@
       "required": ["localPath", "project"],
       "additionalProperties": false,
       "properties": {
-        "localPath": { "type": "string" },
+        "localPath": {
+          "type": "string",
+          "description": "Absolute path, or a single $VAR reference expanded from the environment at run time. Use the $VAR form for any repo whose path embeds personal data, such as an account email inside a cloud-storage folder name. An unset variable makes the mapping unavailable, which must be reported, never silently skipped."
+        },
         "project": {
           "type": "string",
           "description": "Must match an existing option in the Daily Journal 'Projects Touched' multi-select."

@@ -76,6 +76,10 @@
       {
         "localPath": "/absolute/path/to/primary-repo",
         "project": "ProjectName"
+      },
+      {
+        "localPath": "$SOME_REPO_ROOT",
+        "project": "ProjectName"
       }
     ],
     "jobDeadlines": {

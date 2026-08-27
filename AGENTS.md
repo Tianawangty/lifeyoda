@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
 ## What this repo is
 
@@ -8,7 +8,7 @@ LifeYoda is a prose-only workflow kit for a daily planning assistant. There is n
 
 Two runtimes share the same workflows:
 
-- **Claude Code** — manual, via slash commands in `.claude/commands/`. Reads calendars directly.
+- **Codex** — manual, via slash commands in `.Codex/commands/`. Reads calendars directly.
 - **Codex Desktop** — scheduled at 07:30, prompts in `runtimes/codex-desktop/`. Uses Slack as an Outlook proxy because a school Outlook account can fail to connect directly behind extra security prompts. Not verified yet.
 
 ## Commands
@@ -89,8 +89,8 @@ Schedule-table rows and calendar events use one format, defined in `naming.templ
 ## Repo state notes
 
 - Private repository. Two branches: `main` (stable) and `dev` (working). Work branches off `dev`.
-- `runtimes/claude-code/` is a stale scaffold from before the commands were built: `plugin.json` sits at the wrong path and its `commands/*.prompt` files are not loadable. Left in place as the seed for future packaging. `.claude/commands/*.md` is what actually runs.
-- A `PreToolUse:Write` hook in the user's Claude Code settings blocks new `.md` files outside an allowlist; this repo path is whitelisted. Local specifics are in `private/NOTES.md`.
+- `runtimes/Codex/` is a stale scaffold from before the commands were built: `plugin.json` sits at the wrong path and its `commands/*.prompt` files are not loadable. Left in place as the seed for future packaging. `.Codex/commands/*.md` is what actually runs.
+- A `PreToolUse:Write` hook in the user's Codex settings blocks new `.md` files outside an allowlist; this repo path is whitelisted. Local specifics are in `private/NOTES.md`.
 - `LICENSE` still says no license is chosen. That blocks public release.
 
 ## Next steps
@@ -104,6 +104,6 @@ Owner-specific context for all of these — which institution, which tracker, wh
 
 **Repos not yet wired** — additional project repos are listed in `private/NOTES.md`. Each needs an entry in `sources.activeProject.secondary` and `sources.projectMapping`. One stale course mapping was dropped; the corresponding Notion multi-select option was left alone so historical journal rows stay intact.
 
-**Packaging** — deferred by explicit request. When it happens: move `.claude/commands/` to `commands/`, add `.claude-plugin/plugin.json` and `marketplace.json`, and move private config out of the repo to `~/.lifeyoda/` (a marketplace-installed plugin's directory is overwritten on update).
+**Packaging** — deferred by explicit request. When it happens: move `.Codex/commands/` to `commands/`, add `.Codex-plugin/plugin.json` and `marketplace.json`, and move private config out of the repo to `~/.lifeyoda/` (a marketplace-installed plugin's directory is overwritten on update).
 
 **Codex Desktop** — prompts exist but are unverified, and three of them hardcode this repo's absolute path.

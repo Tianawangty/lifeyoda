@@ -53,7 +53,7 @@ When `focusHours.alwaysConfirm` is true, always show which strategy produced the
 
 ## Projects Touched
 
-Start from `sources.projectMapping`: any repo with commits today contributes its mapped project. Categories with no repo — errands, job applications, admin — are judged from the day's actual content. Show the proposed selection for confirmation; never write a value the user has not seen.
+Start from `sources.projectMapping`: any repo with commits today contributes its mapped project. A `localPath` written as a single `$VAR` is an environment reference — expand it before looking for commits. If the variable is unset, name that mapping as unavailable in the output; never treat `$VAR` as a literal directory, and never let an unset variable silently drop a project from the day. Categories with no repo — errands, job applications, admin — are judged from the day's actual content. Show the proposed selection for confirmation; never write a value the user has not seen.
 
 ## Extra Bonus
 

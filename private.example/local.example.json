@@ -49,7 +49,7 @@
         "enabled": false,
         "mode": "direct",
         "calendarIds": [],
-        "returnsWallClockAsUtc": true
+        "returnsWallClockAsUtc": false
       }
     },
     "checklistSources": [

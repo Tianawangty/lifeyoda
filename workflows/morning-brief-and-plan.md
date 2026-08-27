@@ -25,9 +25,18 @@ If a configured source is missing or unavailable, name it as unavailable. Do not
 
 ## Time Handling
 
-Render every time in the config timezone, with the zone abbreviation shown (`08:35 EDT`).
+**Normalize every timestamp to the config timezone at the moment it is read, before it enters any list, table, or comparison.** Everything downstream — sorting, travel buffers, collision checks, the schedule table — is entitled to assume the times it receives are already local. A collection that holds one converted time next to one raw time is a bug, not a display problem.
 
-Outlook is the known trap. When a calendar source has `returnsWallClockAsUtc: true`, the connector labels its times `UTC` but returns wall-clock strings that are already local. Convert before display and cross-check against any time written in the event body. A class that returns `12:35` with body text `08:35 AM` is an 08:35 EDT event.
+Convert each source exactly once, by its own rule:
+
+- **Google Calendar** — returns times that already carry an offset (`2026-08-27T15:00:00-04:00`) or a named `timeZone`. Unambiguous as delivered. Read as-is. **Applying a further offset puts the event four hours early.**
+- **Outlook** (`outlook_calendar_search`) — returns `{dateTime, timeZone}` where `dateTime` is a wall-clock string *in the zone it names*. A `timeZone` of `UTC` means real UTC: convert it. `19:00 UTC` is `15:00 EDT`.
+
+`returnsWallClockAsUtc` marks the rare connector that names a zone it does not actually use, so its string must be read as local and left unconverted. **Outlook is not such a connector** — the flag is `false` for it, verified twice against event body text. Do not set it true for any source without that same proof.
+
+Render every time with the zone abbreviation shown (`15:00 EDT`).
+
+A time written in the event body is a **check**, never the source. If the body and the converted time disagree, the conversion is wrong: say so and stop, rather than quietly trusting whichever looks right.
 
 ## Lookback
 
@@ -51,6 +60,8 @@ Stop once there are enough candidates to identify the top 3-5 items.
 ### Calendars
 
 Read every calendar in `sources.calendars.google.calendars` plus Outlook when enabled. Capture title, start/end, and location.
+
+Convert each event's start/end per Time Handling **as it is captured**, not later. Google and Outlook events land in the same list, and that list must be uniformly in the config timezone before travel buffers, ordering, or the schedule table touch it.
 
 The planning calendar (role `planning_dedupe`) is read to see what is already scheduled, never to derive new work.
 

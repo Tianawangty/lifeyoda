@@ -200,7 +200,7 @@
         },
         "returnsWallClockAsUtc": {
           "type": "boolean",
-          "description": "True when the connector labels times 'UTC' but returns wall-clock strings. Times must be converted to the config timezone before display."
+          "description": "True only for a connector that labels times with a zone it does not actually use, so the string must be read as local and NOT converted. Outlook is not such a connector: outlook_calendar_search returns a wall-clock string in the zone it names, so a timeZone of 'UTC' means real UTC and must be converted. Leave false unless a connector is proven otherwise against event-body times."
         }
       }
     },

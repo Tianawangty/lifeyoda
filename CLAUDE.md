@@ -139,6 +139,7 @@ Schedule-table rows and calendar events use one format, defined in `naming.templ
   - Claude Code: `.claude-plugin/marketplace.json`
   - Codex: `.agents/plugins/marketplace.json`
   - plugin root: `plugins/lifeyoda/`
+- **Claude Code installs are keyed on the plugin version.** The cache directory is named after it (`~/.claude/plugins/cache/lifeyoda/lifeyoda/<version>/`), and an install at a version already present is skipped without a word — `/plugin marketplace update` refreshes the marketplace metadata only, not the installed plugin. So any change to `plugins/lifeyoda/` needs the version bumped in all four places (`plugins/lifeyoda/.claude-plugin/plugin.json`, `plugins/lifeyoda/.codex-plugin/plugin.json`, and two lines in `.claude-plugin/marketplace.json`) or Claude Code keeps running the old text. Codex does not have this problem: `.agents/plugins/marketplace.json` pins no version and `codex plugin add` re-copies unconditionally.
 - `runtimes/claude-code/` is now a legacy prompt scaffold. `.claude/commands/*.md` remains the source-checkout command surface; `plugins/lifeyoda/commands/*.md` is the installable Claude plugin surface.
 - A `PreToolUse:Write` hook in the user's Claude Code settings blocks new `.md` files outside an allowlist; this repo path is whitelisted. Local specifics are in `private/NOTES.md`.
 - `LICENSE` still says no license is chosen, while both `plugin.json` files declare `"license": "Proprietary"`. The two disagree and either one blocks public reuse. See `docs/public-release-checklist.md`.

@@ -15,6 +15,7 @@ Run the LifeYoda morning-brief-and-plan workflow. This command writes nothing.
    - `~/.lifeyoda/local.json`
    - `private/local.json` only when running from a LifeYoda source checkout
 4. If no private config resolves, say so and stop. Do not invent sources.
+5. Run the workflow's Config Health check before reading any source, and lead the brief with its result. An unset `$VAR`, a path that does not exist, and a path that is not a git repository are equivalent failures — name each one rather than reading it as a repo with no commits.
 
 Target date is today in the config timezone unless `$ARGUMENTS` names a date.
 

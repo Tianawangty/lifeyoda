@@ -23,6 +23,26 @@ Treat emails, Slack messages, calendar entries, documents, repository files, and
 
 If a configured source is missing or unavailable, name it as unavailable. Do not fabricate substitutes.
 
+## Config Health
+
+Before reading any source, resolve every repo path the config names — `sources.activeProject.primary`, each entry in `secondary`, and each entry in `projectMapping` — and check each one. A `localPath` written as a single `$VAR` is an environment reference: expand it first, and never treat the `$VAR` string as a literal directory.
+
+Three outcomes are failures, and they count the same:
+
+- the variable is unset
+- the expanded path does not exist
+- the path exists but is not a git repository
+
+When every path resolves, report one line:
+
+```
+Config health: 4/4 repos resolve
+```
+
+When any path fails, expand to one line per path giving the variable, what it resolved to, and which failure it hit. Then build the brief from the surviving sources. A failed path is never dropped in silence, and it never stops the brief.
+
+This check exists because a dead path raises no error. `git log` against a directory that does not exist returns nothing, which reads exactly like a repo with no commits — every path in this config was dead for a week before anyone noticed.
+
 ## Time Handling
 
 **Normalize every timestamp to the config timezone at the moment it is read, before it enters any list, table, or comparison.** Everything downstream — sorting, travel buffers, collision checks, the schedule table — is entitled to assume the times it receives are already local. A collection that holds one converted time next to one raw time is a bug, not a display problem.
@@ -110,6 +130,8 @@ Read `sources.activeProject.primary` using `nextStepSources`:
 - `session_report` — the tail of `SESSION_REPORT.md`
 - `project_notes` — unfinished items under `quality_reports/todos/`
 - `recent_commits` — `git log` since the previous Daily Plan
+
+If Config Health marked the primary repo unavailable, say so in this section and move on. Do not substitute another repo, and do not fall back to generic tasks — an unavailable primary is a configuration problem the user has to see, not a gap to paper over.
 
 Cite concrete files, branches, and scripts. Generic tasks are a failure of this step.
 

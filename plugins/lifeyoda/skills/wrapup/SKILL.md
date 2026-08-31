@@ -20,6 +20,8 @@ Resolve private config in this order:
 2. `~/.lifeyoda/local.json`
 3. `private/local.json` only when running from a LifeYoda source checkout
 
+Expand every `$VAR` `localPath` before looking for today's commits. An unset variable, a path that does not exist, and a path that is not a git repository are equivalent failures, and each has to be named in the output: a repo that cannot be read is not a repo with no commits.
+
 Every Daily Journal must have a matching Daily Plan row. If the plan row does not exist, propose creating the fallback plan row described by the workflow before writing the journal.
 
 Show the full proposed batch first: plan status, journal body, focus-hours derivation, projects touched, carry-forward items, and any fallback plan row. Write only after explicit user confirmation.

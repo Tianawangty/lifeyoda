@@ -293,7 +293,10 @@
       "additionalProperties": false,
       "properties": {
         "repo": { "type": "string" },
-        "localPath": { "type": "string" },
+        "localPath": {
+          "type": "string",
+          "description": "Absolute path, or a single $VAR reference expanded from the environment at run time. Use the $VAR form for any repo whose path embeds personal data, such as an account email inside a cloud-storage folder name. Three failures are equivalent and all must be reported, never silently skipped: the variable is unset, the expanded path does not exist, or it exists but is not a git repository."
+        },
         "label": { "type": "string" }
       }
     },
@@ -304,7 +307,7 @@
       "properties": {
         "localPath": {
           "type": "string",
-          "description": "Absolute path, or a single $VAR reference expanded from the environment at run time. Use the $VAR form for any repo whose path embeds personal data, such as an account email inside a cloud-storage folder name. An unset variable makes the mapping unavailable, which must be reported, never silently skipped."
+          "description": "Absolute path, or a single $VAR reference expanded from the environment at run time. Use the $VAR form for any repo whose path embeds personal data, such as an account email inside a cloud-storage folder name. Three failures are equivalent and all must be reported, never silently skipped: the variable is unset, the expanded path does not exist, or it exists but is not a git repository."
         },
         "project": {
           "type": "string",

@@ -24,7 +24,7 @@ Link the two rows in both directions using the relation properties the two datab
 
 - The Daily Plan's `✅ Today's checklist` — checked versus unchecked
 - Worklog calendars listed in `focusHours.worklogCalendarIds`
-- `git log` for today across `sources.activeProject.primary` and `secondary`
+- `git log` for today across `sources.activeProject.primary` and `secondary`, expanding a `$VAR` `localPath` first. An unset variable, a path that does not exist, and a path that is not a git repository are equivalent failures: name the repo as unavailable rather than recording it as a day with no commits
 - Whatever the user said when invoking wrapup
 
 ## Completion Status
@@ -53,7 +53,7 @@ When `focusHours.alwaysConfirm` is true, always show which strategy produced the
 
 ## Projects Touched
 
-Start from `sources.projectMapping`: any repo with commits today contributes its mapped project. A `localPath` written as a single `$VAR` is an environment reference — expand it before looking for commits. If the variable is unset, name that mapping as unavailable in the output; never treat `$VAR` as a literal directory, and never let an unset variable silently drop a project from the day. Categories with no repo — errands, job applications, admin — are judged from the day's actual content. Show the proposed selection for confirmation; never write a value the user has not seen.
+Start from `sources.projectMapping`: any repo with commits today contributes its mapped project. A `localPath` written as a single `$VAR` is an environment reference — expand it before looking for commits, and never treat `$VAR` as a literal directory. Three failures are equivalent and each has to be named in the output: the variable is unset, the expanded path does not exist, or the path exists but is not a git repository. None of them may silently drop a project from the day. A directory that is simply absent looks identical to a repo with no commits, which is how every path in this config stayed dead for a week. Categories with no repo — errands, job applications, admin — are judged from the day's actual content. Show the proposed selection for confirmation; never write a value the user has not seen.
 
 ## Extra Bonus
 

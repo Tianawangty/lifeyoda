@@ -21,6 +21,8 @@ Resolve private config in this order:
 
 The workflow is read-only. Do not write to Notion, calendars, Slack, Gmail, GitHub, or checklist sources. If no private config resolves, say that LifeYoda private config is missing and stop; do not invent sources.
 
+Before reading any source, run the workflow's Config Health check: expand every `$VAR` `localPath` and verify it resolves. An unset variable, a path that does not exist, and a path that is not a git repository are equivalent failures. Lead the brief with the result and name each failure rather than reading it as a repo with no commits.
+
 Target date is today in the configured timezone unless the user names a date.
 
 Output the workflow's `# Morning Brief` and `# Draft Day Plan` sections. Ask the one required question round between them. When the user confirms the draft, tell them to run the apply-planner flow in the same conversation.

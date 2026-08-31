@@ -1,0 +1,20 @@
+{
+  "name": "lifeyoda",
+  "interface": {
+    "displayName": "LifeYoda"
+  },
+  "plugins": [
+    {
+      "name": "lifeyoda",
+      "source": {
+        "source": "local",
+        "path": "./plugins/lifeyoda"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

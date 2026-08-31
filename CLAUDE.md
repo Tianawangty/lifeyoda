@@ -1,19 +1,21 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code and Codex when working with this repository.
 
 ## What this repo is
 
 LifeYoda is a prose-only workflow kit for a daily planning assistant. There is no build, no test suite, and no executable code — the "programs" are markdown workflows that an agent reads and follows, plus JSON config that parameterizes them.
 
-Two runtimes share the same workflows:
+Two runtime families share the same workflows:
 
 - **Claude Code** — manual, via slash commands in `.claude/commands/`. Reads calendars directly.
-- **Codex Desktop** — scheduled at 07:30, prompts in `runtimes/codex-desktop/`. Uses Slack as an Outlook proxy because a school Outlook account can fail to connect directly behind extra security prompts. Not verified yet.
+- **Codex / ChatGPT Codex** — via packaged skills in `plugins/lifeyoda/skills/`. Codex Desktop prompt materials live in `runtimes/codex-desktop/`; a scheduled task is created separately.
+
+The installable plugin package lives in `plugins/lifeyoda/`. It is self-contained so Claude Code and Codex can copy it into their plugin caches without relying on files outside the plugin root.
 
 ## Commands
 
-Run from this repo directory (they are project-level slash commands).
+Run from this repo directory (project-level Claude Code slash commands):
 
 | Command | Reads | Writes |
 | --- | --- | --- |
@@ -21,6 +23,17 @@ Run from this repo directory (they are project-level slash commands).
 | `/apply-planner` | `workflows/apply-daily-plan.md` | one Notion Daily Plan row + planning-calendar blocks |
 | `/wrapup` | `workflows/wrapup-journal.md` | Daily Plan status + one Daily Journal |
 | `/horizon` | horizon config, resolved like every private config | nothing |
+
+Installed Claude Code commands are namespaced:
+
+```
+/lifeyoda:daily
+/lifeyoda:apply-planner
+/lifeyoda:wrapup
+/lifeyoda:horizon
+```
+
+Codex installs the same behavior as skills: `lifeyoda-daily`, `lifeyoda-apply-planner`, `lifeyoda-wrapup`, and `lifeyoda-horizon`.
 
 The sequence is always `/daily` → user confirms → `/apply-planner`, and `/wrapup` at end of day. `/daily` never writes; `/apply-planner` never runs without a confirmed draft in the same conversation.
 
@@ -37,11 +50,11 @@ Every workflow resolves private config in this order, first hit wins:
 
 1. `$LIFEYODA_CONFIG`
 2. `~/.lifeyoda/local.json`
-3. `private/local.json`
+3. `private/local.json` when running from a source checkout
 
 `config/public.defaults.json` is committed and holds the toolkit's generic behaviour — naming protocol, emoji pool, section names, source limits. `config/local.schema.json` is the authority on the private config's shape (`additionalProperties: false` at the top level, so a typo'd key is a hard error, not a silent ignore).
 
-`private/**` is gitignored. **Real Notion IDs, calendar IDs, and local repo paths live only there.** Never inline them into a workflow, a doc, or this file. `private.example/` mirrors the structure with placeholders.
+`private/**` is gitignored. **Real Notion IDs, calendar IDs, and local repo paths live only there.** For installed plugins, put real config under `~/.lifeyoda/`; never edit the plugin cache. Never inline private values into a workflow, a doc, or this file. `private.example/` mirrors the structure with placeholders.
 
 ## Architecture
 
@@ -89,7 +102,11 @@ Schedule-table rows and calendar events use one format, defined in `naming.templ
 ## Repo state notes
 
 - Private repository. Two branches: `main` (stable) and `dev` (working). Work branches off `dev`.
-- `runtimes/claude-code/` is a stale scaffold from before the commands were built: `plugin.json` sits at the wrong path and its `commands/*.prompt` files are not loadable. Left in place as the seed for future packaging. `.claude/commands/*.md` is what actually runs.
+- Marketplace surfaces:
+  - Claude Code: `.claude-plugin/marketplace.json`
+  - Codex: `.agents/plugins/marketplace.json`
+  - plugin root: `plugins/lifeyoda/`
+- `runtimes/claude-code/` is now a legacy prompt scaffold. `.claude/commands/*.md` remains the source-checkout command surface; `plugins/lifeyoda/commands/*.md` is the installable Claude plugin surface.
 - A `PreToolUse:Write` hook in the user's Claude Code settings blocks new `.md` files outside an allowlist; this repo path is whitelisted. Local specifics are in `private/NOTES.md`.
 - `LICENSE` still says no license is chosen. That blocks public release.
 
@@ -104,6 +121,6 @@ Owner-specific context for all of these — which institution, which tracker, wh
 
 **Repos not yet wired** — additional project repos are listed in `private/NOTES.md`. Each needs an entry in `sources.activeProject.secondary` and `sources.projectMapping`. One stale course mapping was dropped; the corresponding Notion multi-select option was left alone so historical journal rows stay intact.
 
-**Packaging** — deferred by explicit request. When it happens: move `.claude/commands/` to `commands/`, add `.claude-plugin/plugin.json` and `marketplace.json`, and move private config out of the repo to `~/.lifeyoda/` (a marketplace-installed plugin's directory is overwritten on update).
+**Packaging** — private dual-runtime package is built under `plugins/lifeyoda/`. Before public release, choose a license, verify install from `main`, and add synthetic dry-run fixtures with privacy checks.
 
-**Codex Desktop** — prompts exist but are unverified, and three of them hardcode this repo's absolute path.
+**Codex Desktop** — prompt materials exist and are packaged, but the actual scheduled task is still created separately in Codex Desktop.

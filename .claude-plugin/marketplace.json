@@ -1,0 +1,22 @@
+{
+  "name": "lifeyoda",
+  "owner": {
+    "name": "Tiana Wang",
+    "url": "https://github.com/Tianawangty"
+  },
+  "metadata": {
+    "description": "Private LifeYoda daily planning workflow marketplace.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "lifeyoda",
+      "description": "Daily planning workflows for morning brief, confirmed plan application, wrapup journal, and long-horizon planning.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Tiana Wang"
+      },
+      "source": "./plugins/lifeyoda"
+    }
+  ]
+}

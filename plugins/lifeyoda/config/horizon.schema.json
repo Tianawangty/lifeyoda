@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LifeYoda private horizon config",
+  "description": "Long-horizon layer. One terminal goal, the periods it spans, the hard deadlines that cannot move, and the tracks whose milestones are derived backwards from that goal. Read-only for every workflow that consumes it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["terminalGoal", "tracks"],
+  "properties": {
+    "terminalGoal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "date"],
+      "description": "The single fixed point every milestone is derived backwards from. Exactly one.",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "What the terminal goal is, in plain words."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of the terminal goal, YYYY-MM-DD. Distance to this date is what turns a plan into a countdown."
+        }
+      }
+    },
+    "terms": {
+      "type": "array",
+      "description": "Named periods the horizon spans. They supply the background rhythm: stretches that free up time and stretches that consume it.",
+      "items": { "$ref": "#/$defs/term" }
+    },
+    "hardDeadlines": {
+      "type": "array",
+      "description": "Dates that cannot be moved by rescheduling. Each carries a confidence level and, where relevant, the milestones it blocks.",
+      "items": { "$ref": "#/$defs/hardDeadline" }
+    },
+    "tracks": {
+      "type": "array",
+      "description": "Parallel lines of work competing for the same weeks. Weights across tracks are the basis for the weekly time budget.",
+      "items": { "$ref": "#/$defs/track" }
+    },
+    "cadence": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Recurring review points that keep the horizon honest between milestones.",
+      "properties": {
+        "weeklyReview": {
+          "type": "string",
+          "description": "When the weekly horizon review happens, e.g. a weekday name."
+        },
+        "monthlyReview": {
+          "type": "string",
+          "description": "When the monthly sync with the person who owns the terminal goal happens, e.g. 'first week of each month'."
+        }
+      }
+    },
+    "lookaheadDays": {
+      "type": "integer",
+      "description": "How many days ahead a consuming workflow surfaces milestones. Overrides horizon.lookaheadDays in config/public.defaults.json."
+    }
+  },
+  "$defs": {
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "start", "end"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Term label, e.g. 'Fall 2099'."
+        },
+        "start": {
+          "type": "string",
+          "format": "date",
+          "description": "First day of instruction, YYYY-MM-DD."
+        },
+        "end": {
+          "type": "string",
+          "format": "date",
+          "description": "Last day of instruction, YYYY-MM-DD. Exams usually fall after this."
+        },
+        "examStart": {
+          "type": "string",
+          "format": "date",
+          "description": "First day of the final exam period, YYYY-MM-DD."
+        },
+        "examEnd": {
+          "type": "string",
+          "format": "date",
+          "description": "Last day of the final exam period, YYYY-MM-DD."
+        },
+        "breaks": {
+          "type": "array",
+          "description": "Holidays and recesses inside the term. A single-day break has start equal to end.",
+          "items": { "$ref": "#/$defs/termBreak" }
+        },
+        "source": {
+          "type": "string",
+          "description": "Where these dates came from, so a stale term can be re-checked against the same place."
+        }
+      }
+    },
+    "termBreak": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "start", "end"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the break."
+        },
+        "start": {
+          "type": "string",
+          "format": "date",
+          "description": "First day off, YYYY-MM-DD."
+        },
+        "end": {
+          "type": "string",
+          "format": "date",
+          "description": "Last day off, YYYY-MM-DD. Equal to start for a single day."
+        }
+      }
+    },
+    "hardDeadline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "date", "label", "confidence"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable identifier, referenced from milestone dependsOn and from the blocks list of another deadline."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The deadline date, YYYY-MM-DD."
+        },
+        "label": {
+          "type": "string",
+          "description": "What is due on that date."
+        },
+        "source": {
+          "type": "string",
+          "description": "Where the date was read from, so it can be re-checked. Expected on anything marked VERIFIED."
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["VERIFIED", "DERIVED", "INFERRED"],
+          "description": "VERIFIED: read from an authoritative published source. DERIVED: not published anywhere, computed backwards from other constraints, and therefore must carry a companion milestone that confirms it with whoever can make it real. INFERRED: guessed from a pattern such as last year's date, and never presented as settled.",
+          "default": "INFERRED"
+        },
+        "blocks": {
+          "type": "array",
+          "description": "Ids of milestones or other hard deadlines that cannot happen until this one is met.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "weightPct", "milestones"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Short stable identifier, used as the argument that expands this one track."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable name of this line of work."
+        },
+        "weightPct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Share of the working week this track should get. Weights across all tracks are expected to sum to 100; a dormant track sits at 0 and draws from another track's share once it wakes up."
+        },
+        "milestones": {
+          "type": "array",
+          "description": "Points of completion for this track. Dates are derived backwards from the terminal goal, not forwards from today.",
+          "items": { "$ref": "#/$defs/milestone" }
+        }
+      }
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "targetDate", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable identifier, unique across every track. Referenced by dependsOn and by a hard deadline's blocks list."
+        },
+        "label": {
+          "type": "string",
+          "description": "What finishing this milestone means, specific enough to name the artifact it produces."
+        },
+        "targetDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Date this should be done by, YYYY-MM-DD. A target date in the past with a status other than done is a slip, and gets surfaced as one."
+        },
+        "dependsOn": {
+          "type": "array",
+          "description": "Ids of milestones or hard deadlines that must complete first. The critical path is the longest chain of these. Must stay acyclic.",
+          "items": { "type": "string" }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["planned", "in_progress", "done", "slipped", "blocked"],
+          "description": "planned: not started. in_progress: underway. done: finished. slipped: past its target date and still unfinished. blocked: waiting on something outside this milestone's control.",
+          "default": "planned"
+        },
+        "evidence": {
+          "type": "string",
+          "description": "What proves this is done, or the constraint that fixes its date. Free text, and the place to record a rule such as a daily time cap or a fallback input."
+        },
+        "notionPageId": {
+          "type": "string",
+          "description": "Id of the tracker row mirroring this milestone, when one exists. Optional: the horizon file stays readable without it."
+        }
+      }
+    }
+  }
+}

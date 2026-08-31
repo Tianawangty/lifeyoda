@@ -14,7 +14,7 @@ Use this skill when the user asks to run the migrated source command `apply-plan
 Run the apply-daily-plan workflow. **Only run after the user has confirmed a Draft Day Plan.**
 
 1. Read `workflows/apply-daily-plan.md` and follow it exactly.
-2. Read `config/public.defaults.json`, then resolve private config: `$LIFEYODA_CONFIG` → `~/.lifeyoda/local.json` → `private/local.json`.
+2. Read `config/public.defaults.json`, then resolve private config: `$LIFEYODA_CONFIG` → `~/.lifeyoda/local.json` → `private/local.json` when running from a source checkout.
 3. If there is no confirmed draft in this conversation, stop and say so. Never reconstruct a plan from memory and write it.
 
 Writes exactly two destinations:

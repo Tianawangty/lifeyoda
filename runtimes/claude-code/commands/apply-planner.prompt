@@ -1,6 +1,7 @@
+Legacy prompt scaffold. The installable Claude Code plugin commands now live in `plugins/lifeyoda/commands/`; source-checkout commands live in `.claude/commands/`.
+
 Run `workflows/apply-daily-plan.md`.
 
 Only proceed after explicit user confirmation.
 
 Write the confirmed Daily Plan and confirmed planning-calendar blocks according to private config. Do not create a Daily Journal.
-

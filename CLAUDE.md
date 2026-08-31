@@ -1,19 +1,21 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code and Codex when working with this repository.
 
 ## What this repo is
 
 LifeYoda is a prose-only workflow kit for a daily planning assistant. There is no build, no test suite, and no executable code — the "programs" are markdown workflows that an agent reads and follows, plus JSON config that parameterizes them.
 
-Two runtimes share the same workflows:
+Two runtime families share the same workflows:
 
 - **Claude Code** — manual, via slash commands in `.claude/commands/`. Reads calendars directly.
-- **Codex Desktop** — scheduled at 07:30, prompts in `runtimes/codex-desktop/`. Uses Slack as an Outlook proxy because a school Outlook account can fail to connect directly behind extra security prompts. Not verified yet.
+- **Codex / ChatGPT Codex** — via packaged skills in `plugins/lifeyoda/skills/`. Codex Desktop prompt materials live in `runtimes/codex-desktop/`; a scheduled task is created separately.
+
+The installable plugin package lives in `plugins/lifeyoda/`. It is self-contained so Claude Code and Codex can copy it into their plugin caches without relying on files outside the plugin root.
 
 ## Commands
 
-Run from this repo directory (they are project-level slash commands).
+Run from this repo directory (project-level Claude Code slash commands):
 
 | Command | Reads | Writes |
 | --- | --- | --- |
@@ -22,14 +24,42 @@ Run from this repo directory (they are project-level slash commands).
 | `/wrapup` | `workflows/wrapup-journal.md` | Daily Plan status + one Daily Journal |
 | `/horizon` | horizon config, resolved like every private config | nothing |
 
+Installed Claude Code commands are namespaced:
+
+```
+/lifeyoda:daily
+/lifeyoda:apply-planner
+/lifeyoda:wrapup
+/lifeyoda:horizon
+```
+
+Codex installs the same behavior as skills: `lifeyoda-daily`, `lifeyoda-apply-planner`, `lifeyoda-wrapup`, and `lifeyoda-horizon`.
+
 The sequence is always `/daily` → user confirms → `/apply-planner`, and `/wrapup` at end of day. `/daily` never writes; `/apply-planner` never runs without a confirmed draft in the same conversation.
 
 Verify config health with:
 
 ```bash
-python3 -c "import json;d=json.load(open('private/local.json'));print(sorted(d))"
-git check-ignore -v private/local.json    # must print a match
+# 1. every repo path the config names actually resolves
+zsh -c 'for v in PROJECT_A_ROOT LIFEYODA_ROOT PROJECT_B_ROOT PROJECT_C_ROOT; do
+  p="${(P)v}"
+  if [ -z "$p" ]; then printf "  %-15s UNSET\n" "$v"
+  elif git -C "$p" rev-parse --is-inside-work-tree >/dev/null 2>&1; then printf "  %-15s OK\n" "$v"
+  elif [ -d "$p" ]; then printf "  %-15s NOT-A-REPO   %s\n" "$v" "$p"
+  else printf "  %-15s MISSING      %s\n" "$v" "$p"; fi
+done'
+
+# 2. the config parses and stores no literal paths
+python3 -c "import json,os;d=json.load(open(os.path.expanduser('~/.lifeyoda/local.json')));s=d['sources'];print([m['localPath'] for m in s['projectMapping']], s['activeProject']['primary']['localPath'])"
+
+# 3. nothing private is staged for a commit
+git grep --cached -nIiE "@group\.calendar\.google\.com|@gmail\.com|/Users/" \
+  | grep -vE "^(CLAUDE|AGENTS)\.md:|^docs/public-release-checklist\.md:"   # these carry the patterns themselves
+git ls-files private/                                                          # expect only .gitkeep
+git add -An . | grep -c "private/"                                             # expect 0
 ```
+
+Run check 1 whenever a repo moves, a machine changes, or `/daily` reports anything other than `4/4`. It is the same check the workflow's Config Health step performs; running it by hand is how you tell a real failure from a workflow that skipped the step.
 
 ## Config resolution
 
@@ -37,11 +67,27 @@ Every workflow resolves private config in this order, first hit wins:
 
 1. `$LIFEYODA_CONFIG`
 2. `~/.lifeyoda/local.json`
-3. `private/local.json`
+3. `private/local.json` when running from a source checkout
 
 `config/public.defaults.json` is committed and holds the toolkit's generic behaviour — naming protocol, emoji pool, section names, source limits. `config/local.schema.json` is the authority on the private config's shape (`additionalProperties: false` at the top level, so a typo'd key is a hard error, not a silent ignore).
 
-`private/**` is gitignored. **Real Notion IDs, calendar IDs, and local repo paths live only there.** Never inline them into a workflow, a doc, or this file. `private.example/` mirrors the structure with placeholders.
+`private/**` is gitignored. **Real Notion IDs, calendar IDs, and repo paths live only in the private layer, never in a workflow, a doc, or this file.** `private.example/` mirrors the structure with placeholders.
+
+Where that layer lives is the user's choice, and all three tiers are supported equally:
+
+| Where | Good for |
+| --- | --- |
+| `$LIFEYODA_CONFIG` | a path you want to switch between profiles |
+| `~/.lifeyoda/` — a real directory, or a symlink to a synced folder | installed plugins, since it resolves from any working directory |
+| `private/` in a source checkout | trying the toolkit out before committing to a location |
+
+The third tier only resolves when the working directory is the checkout, so an installed plugin invoked from elsewhere will not find it. It is also gitignored and untracked, which means `git clean -xdf` deletes it and a fresh clone starts with nothing — keep a copy elsewhere if you use it. Never edit the plugin cache.
+
+This repo's owner uses tier 2 as a symlink into a cloud-synced folder that sits outside any git repository, which keeps the files backed up while putting them out of reach of every git operation.
+
+A repo `localPath` may be written as a single `$VAR` instead of a literal path. That form exists so a path embedding personal data — an account email inside a cloud-storage folder name, for example — never enters a config file. Set those variables in `~/.zshenv`, not `~/.zshrc`: Claude Code's Bash tool runs a **non-interactive login zsh**, which reads `.zshenv` and `.zprofile` and never sources `.zshrc`. Codex ships its own zsh and reads `.zshenv` on every invocation.
+
+One known rough edge: `$LIFEYODA_CONFIG` is consulted as the first tier for `horizon.json` too, but its name describes a path to `local.json`. Setting it would point the horizon lookup at the wrong file. It is unset here, so nothing triggers today.
 
 ## Architecture
 
@@ -89,9 +135,15 @@ Schedule-table rows and calendar events use one format, defined in `naming.templ
 ## Repo state notes
 
 - Private repository. Two branches: `main` (stable) and `dev` (working). Work branches off `dev`.
-- `runtimes/claude-code/` is a stale scaffold from before the commands were built: `plugin.json` sits at the wrong path and its `commands/*.prompt` files are not loadable. Left in place as the seed for future packaging. `.claude/commands/*.md` is what actually runs.
+- Marketplace surfaces:
+  - Claude Code: `.claude-plugin/marketplace.json`
+  - Codex: `.agents/plugins/marketplace.json`
+  - plugin root: `plugins/lifeyoda/`
+- **Claude Code installs are keyed on the plugin version.** The cache directory is named after it (`~/.claude/plugins/cache/lifeyoda/lifeyoda/<version>/`), and an install at a version already present is skipped without a word — `/plugin marketplace update` refreshes the marketplace metadata only, not the installed plugin. So any change to `plugins/lifeyoda/` needs the version bumped in all four places (`plugins/lifeyoda/.claude-plugin/plugin.json`, `plugins/lifeyoda/.codex-plugin/plugin.json`, and two lines in `.claude-plugin/marketplace.json`) or Claude Code keeps running the old text. Codex does not have this problem: `.agents/plugins/marketplace.json` pins no version and `codex plugin add` re-copies unconditionally.
+- `runtimes/claude-code/` is now a legacy prompt scaffold. `.claude/commands/*.md` remains the source-checkout command surface; `plugins/lifeyoda/commands/*.md` is the installable Claude plugin surface.
 - A `PreToolUse:Write` hook in the user's Claude Code settings blocks new `.md` files outside an allowlist; this repo path is whitelisted. Local specifics are in `private/NOTES.md`.
-- `LICENSE` still says no license is chosen. That blocks public release.
+- `LICENSE` still says no license is chosen, while both `plugin.json` files declare `"license": "Proprietary"`. The two disagree and either one blocks public reuse. See `docs/public-release-checklist.md`.
+- The private layer lives outside this checkout. `private/` holds only `.gitkeep`; a `git clean -xdf` here destroys nothing.
 
 ## Next steps
 
@@ -102,8 +154,12 @@ Owner-specific context for all of these — which institution, which tracker, wh
 - whether the owner's project tracker becomes writable again, and whether a `Scheduled Date` property is reintroduced for cross-day scheduling — both were deliberately deferred to this layer
 - whether the per-track budget in the Draft Day Plan's Assumptions block holds up against recorded effort once several weeks of Journals exist to compare against
 
-**Repos not yet wired** — additional project repos are listed in `private/NOTES.md`. Each needs an entry in `sources.activeProject.secondary` and `sources.projectMapping`. One stale course mapping was dropped; the corresponding Notion multi-select option was left alone so historical journal rows stay intact.
+**Repos not yet wired** — two candidate repos are listed in `private/NOTES.md`, and neither exists on disk as of 2026-08-31. Confirm whether they were abandoned before adding entries to `sources.activeProject.secondary` and `sources.projectMapping`. One stale course mapping was dropped; the corresponding Notion multi-select option was left alone so historical journal rows stay intact.
 
-**Packaging** — deferred by explicit request. When it happens: move `.claude/commands/` to `commands/`, add `.claude-plugin/plugin.json` and `marketplace.json`, and move private config out of the repo to `~/.lifeyoda/` (a marketplace-installed plugin's directory is overwritten on update).
+**`activeProject.secondary` is empty** — only the primary repo is mined for next steps. The personal-site repo was demoted to `projectMapping` alone, and a secondary repo is deliberately never opened by `/daily`: those signals reach the brief through a deadline calendar and the horizon track instead. Adding a repo to `secondary` means `/daily` will read its `SESSION_REPORT.md` and unfinished notes, so decide the privacy question before adding one.
 
-**Codex Desktop** — prompts exist but are unverified, and three of them hardcode this repo's absolute path.
+**Packaging** — the dual-runtime package under `plugins/lifeyoda/` is now tracked in git, so the two plugin caches can be reinstalled from a commit. Remaining pre-release work — license choice, the two publication routes, the `.app.json` connector IDs, install verification from `main`, and synthetic dry-run fixtures — is inventoried with measured exposure figures in `docs/public-release-checklist.md`.
+
+**`state.json` is read but never written** — `workflows/morning-brief-and-plan.md` lists it as an input and `config/README.md` calls it "run state written by the workflows", but no workflow contains a write step. It has held its initial nulls since the day it was created, so `lastSuccessfulMorningRunAt` proves nothing about whether a run happened. Either add the write step or drop the file: a state file that is always empty is worse than no state file, because it invites exactly the wrong inference.
+
+**Codex Desktop** — prompt materials exist and are packaged, but the actual scheduled task is still created separately in Codex Desktop.

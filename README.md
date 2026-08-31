@@ -1,6 +1,6 @@
 # LifeYoda
 
-A workflow kit for a daily planning assistant, shared between Claude Code and Codex Desktop.
+A workflow kit for a daily planning assistant, packaged for both Claude Code and Codex/ChatGPT Codex.
 
 The loop:
 
@@ -10,7 +10,7 @@ The loop:
 
 Notion is the source of truth. The calendar mirror is one-way and never read back.
 
-## Running it (Claude Code)
+## Running it from this source checkout
 
 The three commands live in `.claude/commands/`, so they are available when Claude Code is working in this directory:
 
@@ -18,9 +18,49 @@ The three commands live in `.claude/commands/`, so they are available when Claud
 /daily        Morning Brief + Draft Day Plan   (read-only)
 /apply-planner   write the confirmed plan
 /wrapup       reconcile and journal
+/horizon      long-horizon planning view       (read-only)
 ```
 
-Before the first run, copy `private.example/local.example.json` to `private/local.json` and fill in your own IDs. `config/local.schema.json` documents every field.
+These commands are local development conveniences. The installable Claude Code plugin exposes namespaced commands instead:
+
+```
+/lifeyoda:daily
+/lifeyoda:apply-planner
+/lifeyoda:wrapup
+/lifeyoda:horizon
+```
+
+## Installing From Private GitHub
+
+This repository now contains both marketplace surfaces:
+
+- Claude Code marketplace: `.claude-plugin/marketplace.json`
+- Codex marketplace: `.agents/plugins/marketplace.json`
+- Shared plugin root: `plugins/lifeyoda/`
+
+Claude Code:
+
+```text
+/plugin marketplace add Tianawangty/LifeYoda
+/plugin install lifeyoda@lifeyoda
+```
+
+For development branch testing:
+
+```text
+/plugin marketplace add Tianawangty/LifeYoda@dev
+```
+
+Codex CLI:
+
+```bash
+codex plugin marketplace add Tianawangty/LifeYoda --ref dev
+codex plugin add lifeyoda@lifeyoda
+```
+
+For ChatGPT/Codex workspace import, use source `https://github.com/Tianawangty/LifeYoda.git`, leave path empty, and use branch `dev` for testing or `main` for the stable package.
+
+Before the first run, copy `private.example/*.json` to `~/.lifeyoda/` and fill in your own IDs. Do not edit the installed plugin cache. `config/local.schema.json` documents every field.
 
 ## Configuration
 
@@ -29,12 +69,23 @@ Public, committed:
 - `config/public.defaults.json` — generic behaviour: naming protocol, emoji pool, page sections, source limits
 - `config/local.schema.json` — the shape private config must satisfy
 
-Private, never committed:
+Private, never committed. Three locations resolve, first hit wins, and all three are equally supported — pick the one that matches how you run the toolkit:
 
-- resolved as `$LIFEYODA_CONFIG` → `~/.lifeyoda/local.json` → `private/local.json`
-- `private/**` is gitignored
+| Location | Pick it when |
+| --- | --- |
+| `$LIFEYODA_CONFIG` | you switch between profiles, or keep config somewhere unusual |
+| `~/.lifeyoda/` | you installed the plugin — this resolves from any working directory |
+| `private/` in a source checkout | you are trying the toolkit out and have not chosen a home yet |
+
+`~/.lifeyoda/` may be a real directory or a symlink to a folder you already back up. A symlink into a synced folder outside any git repository is worth considering: the files stay backed up, and no git command can reach them.
+
+The source-checkout location has two properties worth knowing before you rely on it. It resolves only when the working directory is the checkout, so an installed plugin invoked from another project will not find it. And it is gitignored and untracked, so `git clean -xdf` deletes it and a fresh clone starts empty.
+
+`private/**` is gitignored either way.
 
 Private means: Notion page/block/database/data-source IDs, calendar IDs, Gmail labels, Slack IDs, checklist-source locators, repo names and local paths.
+
+A repo `localPath` may be a single `$VAR` reference instead of a literal path, expanded from the environment at run time. Use it when a path embeds something you would rather keep out of a file — a cloud-storage folder named after your account email, for example. Define those variables in `~/.zshenv` rather than `~/.zshrc`: agent runtimes start non-interactive shells, which never source `.zshrc`. An unset variable, a path that does not exist, and a path that is not a git repository are all reported as unavailable; none of them is ever treated as a literal directory.
 
 ## Design notes
 
@@ -46,11 +97,12 @@ Three choices that are easy to get wrong:
 
 ## Runtime split
 
-Both runtimes read the same `workflows/*.md`.
+Both runtimes read the same packaged `workflows/*.md`.
 
-- **Claude Code** — manual trigger, direct calendar connectors.
-- **Codex Desktop** — scheduled morning run; can fall back to Slack notifications as an Outlook Calendar proxy when a school account will not connect directly. Prompts live in `runtimes/codex-desktop/` and are not yet verified.
+- **Claude Code** — manual trigger through source commands or installed `/lifeyoda:*` commands.
+- **Codex / ChatGPT Codex** — installed skills for the same flows; external connectors are optional and unavailable sources are reported rather than guessed.
+- **Codex Desktop** — prompt materials remain in `runtimes/codex-desktop/`; scheduled tasks are created separately in Codex Desktop.
 
 ## Status
 
-Working scaffold, not a packaged plugin. `LICENSE` has not been chosen, so this is not yet licensed for reuse. See `CLAUDE.md` for architecture details and the open next steps.
+Private dual-runtime plugin package. `LICENSE` has not been chosen, so this is not licensed for public reuse. See `CLAUDE.md` for architecture details and the open next steps.

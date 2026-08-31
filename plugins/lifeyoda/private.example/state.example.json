@@ -1,0 +1,11 @@
+{
+  "lastSuccessfulMorningRunAt": null,
+  "lastAppliedDailyPlanDate": null,
+  "lastJournalAt": null,
+  "processed": {
+    "gmailThreadIds": [],
+    "slackMessageIds": [],
+    "courseTaskIds": []
+  }
+}
+

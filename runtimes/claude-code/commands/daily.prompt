@@ -1,3 +1,5 @@
+Legacy prompt scaffold. The installable Claude Code plugin commands now live in `plugins/lifeyoda/commands/`; source-checkout commands live in `.claude/commands/`.
+
 Run `workflows/morning-brief-and-plan.md`.
 
 Claude Code runtime:
@@ -6,4 +8,3 @@ Claude Code runtime:
 - Slack is optional for messages, mentions, and app notifications; it is not required as the Outlook Calendar proxy unless private config requests it.
 - Do not write Notion or calendar entries during this command.
 - Output Morning Brief and Draft Day Plan only.
-

@@ -9,6 +9,7 @@ Run the wrapup-journal workflow.
 
 1. Read `workflows/wrapup-journal.md` and follow it exactly.
 2. Read `config/public.defaults.json`, then resolve private config: `$LIFEYODA_CONFIG` → `~/.lifeyoda/local.json` → `private/local.json`.
+3. Expand every `$VAR` `localPath` before looking for commits. An unset variable, a missing directory, and a directory that is not a git repository are equivalent failures and each must be named — a repo that cannot be read is not a repo with no commits.
 
 Hard rule: a Daily Journal is never created without a matching Daily Plan row. If the user never planned that day, create the plan row first with body text `See journal`.
 

@@ -1,3 +1,5 @@
+Legacy prompt scaffold. The installable Claude Code plugin commands now live in `plugins/lifeyoda/commands/`; source-checkout commands live in `.claude/commands/`.
+
 Run `workflows/wrapup-journal.md`.
 
-Read the configured Daily Plan, actuals, work logs, and active repo changes. Build the journal content from `templates/daily-journal-page.template`. Propose the wrapup batch first. Write only after explicit confirmation.
+Read the configured Daily Plan, actuals, work logs, and active repo changes. Build the journal content from `templates/daily-journal-page.md`. Propose the wrapup batch first. Write only after explicit confirmation.

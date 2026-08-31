@@ -1,0 +1,38 @@
+{
+  "name": "lifeyoda",
+  "version": "0.1.1",
+  "description": "Daily planning workflows for morning brief, confirmed plan application, wrapup journal, and long-horizon planning.",
+  "author": {
+    "name": "Tiana Wang",
+    "url": "https://github.com/Tianawangty"
+  },
+  "homepage": "https://github.com/Tianawangty/LifeYoda",
+  "repository": "https://github.com/Tianawangty/LifeYoda",
+  "license": "Proprietary",
+  "keywords": [
+    "daily-planning",
+    "notion",
+    "calendar",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "LifeYoda",
+    "shortDescription": "Daily planning workflows for Codex.",
+    "longDescription": "LifeYoda packages the same morning brief, confirmed plan application, wrapup journal, and long-horizon workflows used by the Claude Code runtime.",
+    "developerName": "Tiana Wang",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Run my LifeYoda morning brief.",
+      "Apply my confirmed LifeYoda day plan.",
+      "Run my LifeYoda wrapup journal."
+    ],
+    "brandColor": "#10A37F"
+  }
+}

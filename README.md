@@ -69,12 +69,23 @@ Public, committed:
 - `config/public.defaults.json` — generic behaviour: naming protocol, emoji pool, page sections, source limits
 - `config/local.schema.json` — the shape private config must satisfy
 
-Private, never committed:
+Private, never committed. Three locations resolve, first hit wins, and all three are equally supported — pick the one that matches how you run the toolkit:
 
-- resolved as `$LIFEYODA_CONFIG` → `~/.lifeyoda/local.json` → `private/local.json` when running from a source checkout
-- `private/**` is gitignored
+| Location | Pick it when |
+| --- | --- |
+| `$LIFEYODA_CONFIG` | you switch between profiles, or keep config somewhere unusual |
+| `~/.lifeyoda/` | you installed the plugin — this resolves from any working directory |
+| `private/` in a source checkout | you are trying the toolkit out and have not chosen a home yet |
+
+`~/.lifeyoda/` may be a real directory or a symlink to a folder you already back up. A symlink into a synced folder outside any git repository is worth considering: the files stay backed up, and no git command can reach them.
+
+The source-checkout location has two properties worth knowing before you rely on it. It resolves only when the working directory is the checkout, so an installed plugin invoked from another project will not find it. And it is gitignored and untracked, so `git clean -xdf` deletes it and a fresh clone starts empty.
+
+`private/**` is gitignored either way.
 
 Private means: Notion page/block/database/data-source IDs, calendar IDs, Gmail labels, Slack IDs, checklist-source locators, repo names and local paths.
+
+A repo `localPath` may be a single `$VAR` reference instead of a literal path, expanded from the environment at run time. Use it when a path embeds something you would rather keep out of a file — a cloud-storage folder named after your account email, for example. Define those variables in `~/.zshenv` rather than `~/.zshrc`: agent runtimes start non-interactive shells, which never source `.zshrc`. An unset variable, a path that does not exist, and a path that is not a git repository are all reported as unavailable; none of them is ever treated as a literal directory.
 
 ## Design notes
 

@@ -10,20 +10,21 @@ This directory separates public toolkit configuration from private user configur
 
 ## Private Files
 
-All real user-specific files must live under:
+All real user-specific files live in one directory, resolved in this order, first hit wins:
 
 ```text
-private/        # source checkout only
-~/.lifeyoda/    # installed plugin runtime
+$LIFEYODA_CONFIG   # explicit override
+~/.lifeyoda/       # a real directory, or a symlink to a folder you back up
+private/           # source checkout only, and only when that is the working directory
 ```
 
-This folder is excluded by `.gitignore`.
+`private/**` is excluded by `.gitignore`.
 
-Recommended private files:
+The files that directory holds:
 
-- `private/local.json`
-- `private/state.json`
-- `private/notion.json`
-- `private/sources.json`
+- `local.json` — the private config this schema describes
+- `horizon.json` — the long-horizon goal, deadlines, and milestones, if you use `/horizon`
+- `state.json` — run state written by the workflows
+- `NOTES.md` — optional free-form notes, read by nothing
 
 Do not commit real Notion IDs, Slack IDs, Gmail labels, calendar IDs, course sources, active repo choices, or personal workflow state.

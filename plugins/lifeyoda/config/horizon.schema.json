@@ -4,12 +4,18 @@
   "description": "Long-horizon layer. One terminal goal, the periods it spans, the hard deadlines that cannot move, and the tracks whose milestones are derived backwards from that goal. Read-only for every workflow that consumes it.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["terminalGoal", "tracks"],
+  "required": [
+    "terminalGoal",
+    "tracks"
+  ],
   "properties": {
     "terminalGoal": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["label", "date"],
+      "required": [
+        "label",
+        "date"
+      ],
       "description": "The single fixed point every milestone is derived backwards from. Exactly one.",
       "properties": {
         "label": {
@@ -25,18 +31,24 @@
     },
     "terms": {
       "type": "array",
-      "description": "Named periods the horizon spans. They supply the background rhythm: stretches that free up time and stretches that consume it.",
-      "items": { "$ref": "#/$defs/term" }
+      "description": "Named periods the horizon spans — a semester, a quarter, a fiscal year, a release cycle. They supply the background rhythm: stretches that free up time and stretches that consume it.",
+      "items": {
+        "$ref": "#/$defs/term"
+      }
     },
     "hardDeadlines": {
       "type": "array",
       "description": "Dates that cannot be moved by rescheduling. Each carries a confidence level and, where relevant, the milestones it blocks.",
-      "items": { "$ref": "#/$defs/hardDeadline" }
+      "items": {
+        "$ref": "#/$defs/hardDeadline"
+      }
     },
     "tracks": {
       "type": "array",
       "description": "Parallel lines of work competing for the same weeks. Weights across tracks are the basis for the weekly time budget.",
-      "items": { "$ref": "#/$defs/track" }
+      "items": {
+        "$ref": "#/$defs/track"
+      }
     },
     "cadence": {
       "type": "object",
@@ -49,7 +61,7 @@
         },
         "monthlyReview": {
           "type": "string",
-          "description": "When the monthly sync with the person who owns the terminal goal happens, e.g. 'first week of each month'."
+          "description": "When the plan gets reviewed with whoever else has a stake in it — a manager, a committee, a co-founder. Free text."
         }
       }
     },
@@ -62,7 +74,11 @@
     "term": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "start", "end"],
+      "required": [
+        "name",
+        "start",
+        "end"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -91,7 +107,9 @@
         "breaks": {
           "type": "array",
           "description": "Holidays and recesses inside the term. A single-day break has start equal to end.",
-          "items": { "$ref": "#/$defs/termBreak" }
+          "items": {
+            "$ref": "#/$defs/termBreak"
+          }
         },
         "source": {
           "type": "string",
@@ -102,7 +120,11 @@
     "termBreak": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "start", "end"],
+      "required": [
+        "name",
+        "start",
+        "end"
+      ],
       "properties": {
         "name": {
           "type": "string",
@@ -123,7 +145,12 @@
     "hardDeadline": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "date", "label", "confidence"],
+      "required": [
+        "id",
+        "date",
+        "label",
+        "confidence"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -144,21 +171,32 @@
         },
         "confidence": {
           "type": "string",
-          "enum": ["VERIFIED", "DERIVED", "INFERRED"],
+          "enum": [
+            "VERIFIED",
+            "DERIVED",
+            "INFERRED"
+          ],
           "description": "VERIFIED: read from an authoritative published source. DERIVED: not published anywhere, computed backwards from other constraints, and therefore must carry a companion milestone that confirms it with whoever can make it real. INFERRED: guessed from a pattern such as last year's date, and never presented as settled.",
           "default": "INFERRED"
         },
         "blocks": {
           "type": "array",
           "description": "Ids of milestones or other hard deadlines that cannot happen until this one is met.",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "track": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "weightPct", "milestones"],
+      "required": [
+        "id",
+        "label",
+        "weightPct",
+        "milestones"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -174,17 +212,31 @@
           "maximum": 100,
           "description": "Share of the working week this track should get. Weights across all tracks are expected to sum to 100; a dormant track sits at 0 and draws from another track's share once it wakes up."
         },
+        "projects": {
+          "type": "array",
+          "description": "Project labels whose recorded effort counts toward this track. These are the same strings the Daily Journal's `Projects Touched` uses. A label belongs to exactly one track — the attribution runs project to track, so a label in two tracks makes a day's hours unassignable. A repo-backed label is the repository's own name; a label with no repository is named directly.",
+          "items": {
+            "type": "string"
+          }
+        },
         "milestones": {
           "type": "array",
           "description": "Points of completion for this track. Dates are derived backwards from the terminal goal, not forwards from today.",
-          "items": { "$ref": "#/$defs/milestone" }
+          "items": {
+            "$ref": "#/$defs/milestone"
+          }
         }
       }
     },
     "milestone": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "targetDate", "status"],
+      "required": [
+        "id",
+        "label",
+        "targetDate",
+        "status"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -202,21 +254,25 @@
         "dependsOn": {
           "type": "array",
           "description": "Ids of milestones or hard deadlines that must complete first. The critical path is the longest chain of these. Must stay acyclic.",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "status": {
           "type": "string",
-          "enum": ["planned", "in_progress", "done", "slipped", "blocked"],
+          "enum": [
+            "planned",
+            "in_progress",
+            "done",
+            "slipped",
+            "blocked"
+          ],
           "description": "planned: not started. in_progress: underway. done: finished. slipped: past its target date and still unfinished. blocked: waiting on something outside this milestone's control.",
           "default": "planned"
         },
         "evidence": {
           "type": "string",
           "description": "What proves this is done, or the constraint that fixes its date. Free text, and the place to record a rule such as a daily time cap or a fallback input."
-        },
-        "notionPageId": {
-          "type": "string",
-          "description": "Id of the tracker row mirroring this milestone, when one exists. Optional: the horizon file stays readable without it."
         }
       }
     }

@@ -11,10 +11,18 @@
       "examStart": "2098-12-03",
       "examEnd": "2098-12-09",
       "breaks": [
-        { "name": "One-day holiday", "start": "2098-09-07", "end": "2098-09-07" },
-        { "name": "Multi-day recess", "start": "2098-11-23", "end": "2098-11-27" }
+        {
+          "name": "One-day holiday",
+          "start": "2098-09-07",
+          "end": "2098-09-07"
+        },
+        {
+          "name": "Multi-day recess",
+          "start": "2098-11-23",
+          "end": "2098-11-27"
+        }
       ],
-      "source": "replace-with-schedule-url"
+      "source": "replace-with-the-url-that-publishes-this-date"
     },
     {
       "name": "Spring 2099",
@@ -23,10 +31,18 @@
       "examStart": "2099-04-28",
       "examEnd": "2099-05-04",
       "breaks": [
-        { "name": "One-day holiday", "start": "2099-01-18", "end": "2099-01-18" },
-        { "name": "Term break", "start": "2099-03-08", "end": "2099-03-12" }
+        {
+          "name": "One-day holiday",
+          "start": "2099-01-18",
+          "end": "2099-01-18"
+        },
+        {
+          "name": "Term break",
+          "start": "2099-03-08",
+          "end": "2099-03-12"
+        }
       ],
-      "source": "replace-with-schedule-url"
+      "source": "replace-with-the-url-that-publishes-this-date"
     }
   ],
   "hardDeadlines": [
@@ -34,15 +50,17 @@
       "id": "hd-form-due",
       "date": "2099-01-22",
       "label": "Replace with an administrative form deadline",
-      "source": "replace-with-deadline-url",
+      "source": "replace-with-the-url-that-publishes-this-date",
       "confidence": "VERIFIED",
-      "blocks": ["alpha-2"]
+      "blocks": [
+        "alpha-2"
+      ]
     },
     {
       "id": "hd-terminal",
       "date": "2099-05-01",
       "label": "Replace with the terminal event itself",
-      "source": "replace-with-deadline-url",
+      "source": "replace-with-the-url-that-publishes-this-date",
       "confidence": "VERIFIED",
       "blocks": []
     },
@@ -52,7 +70,9 @@
       "label": "Replace with a date nobody publishes, computed backwards from the terminal goal",
       "source": "derived from hd-terminal working backwards",
       "confidence": "DERIVED",
-      "blocks": ["hd-terminal"]
+      "blocks": [
+        "hd-terminal"
+      ]
     }
   ],
   "tracks": [
@@ -60,6 +80,9 @@
       "id": "alpha",
       "label": "Replace with the track that owns most of the week",
       "weightPct": 70,
+      "projects": [
+        "repo-name-for-the-main-track"
+      ],
       "milestones": [
         {
           "id": "alpha-1",
@@ -67,26 +90,27 @@
           "targetDate": "2098-09-01",
           "dependsOn": [],
           "status": "planned",
-          "evidence": "Replace with what proves this is finished",
-          "notionPageId": ""
+          "evidence": "Replace with what proves this is finished"
         },
         {
           "id": "alpha-2",
           "label": "Replace with the artifact that cannot start until alpha-1 lands",
           "targetDate": "2098-10-15",
-          "dependsOn": ["alpha-1"],
+          "dependsOn": [
+            "alpha-1"
+          ],
           "status": "planned",
-          "evidence": "Replace with what proves this is finished",
-          "notionPageId": ""
+          "evidence": "Replace with what proves this is finished"
         },
         {
           "id": "alpha-3-confirm-derived",
           "label": "Confirm the DERIVED date in hd-derived-example with the people who can make it real",
           "targetDate": "2098-11-01",
-          "dependsOn": ["alpha-2"],
+          "dependsOn": [
+            "alpha-2"
+          ],
           "status": "planned",
-          "evidence": "A DERIVED deadline always carries a companion milestone like this one. Until it lands, the date is an assumption.",
-          "notionPageId": ""
+          "evidence": "A DERIVED deadline always carries a companion milestone like this one. Until it lands, the date is an assumption."
         }
       ]
     },
@@ -94,6 +118,10 @@
       "id": "beta",
       "label": "Replace with the track that competes for the same weeks",
       "weightPct": 30,
+      "projects": [
+        "OtherRepo",
+        "NonRepoCategory"
+      ],
       "milestones": [
         {
           "id": "beta-1",
@@ -101,17 +129,17 @@
           "targetDate": "2098-09-30",
           "dependsOn": [],
           "status": "planned",
-          "evidence": "An external deadline outranks an internal target date when the two collide.",
-          "notionPageId": ""
+          "evidence": "An external deadline outranks an internal target date when the two collide."
         },
         {
           "id": "beta-2",
           "label": "Replace with the milestone that follows it",
           "targetDate": "2098-12-01",
-          "dependsOn": ["beta-1"],
+          "dependsOn": [
+            "beta-1"
+          ],
           "status": "planned",
-          "evidence": "Replace with what proves this is finished",
-          "notionPageId": ""
+          "evidence": "Replace with what proves this is finished"
         }
       ]
     }

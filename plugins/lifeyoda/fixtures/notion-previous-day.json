@@ -1,0 +1,51 @@
+{
+  "$comment": "Invented Notion rows for the day before the run date, read by the morning brief as the previous Daily Plan and Journal. Dates are offsets from the run date; see manifest.json.",
+  "dailyPlan": {
+    "title": "T-1",
+    "icon": "🧭",
+    "status": "Partial",
+    "focus": [
+      "Ship the pilot rollout check",
+      "Draft the UX interview findings",
+      "Reply to the research sync thread"
+    ],
+    "checklist": [
+      {
+        "text": "🔬 [widget-app] Run: pilot rollout check",
+        "checked": true
+      },
+      {
+        "text": "✍️ [widget-research] Draft: UX interview findings",
+        "checked": false
+      },
+      {
+        "text": "🔧 [widget-app] Reply: research sync thread",
+        "checked": true
+      }
+    ],
+    "link": "https://notion.example.com/demo-daily-plan"
+  },
+  "dailyJournal": {
+    "title": "T-1",
+    "icon": "📓",
+    "date": "T-1",
+    "focusHours": 3.5,
+    "trackHours": "build 2; research 1.5",
+    "projectsTouched": [
+      "widget-app",
+      "widget-research"
+    ],
+    "whatGotDone": [
+      "Pilot rollout check ran clean; dashboard shows both arms live",
+      "Replied to the research sync thread and confirmed {T+1}"
+    ],
+    "notDoneCarryForward": [
+      "UX interview findings — the rollout check took the whole morning, nothing drafted"
+    ],
+    "extraBonus": [
+      "Fixed a duplicate-id bug in the event schema that had been dropping 40 rows"
+    ],
+    "timeOnTask": "3.5 hours across two tracks, from the worklog calendar. The 10:30-11:00 overlap was confirmed real, so both blocks count in full and the track total exceeds the 3.0 hours of wall clock those blocks span.",
+    "link": "https://notion.example.com/demo-daily-journal"
+  }
+}

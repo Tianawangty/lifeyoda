@@ -5,21 +5,14 @@ description: Show the LifeYoda long-horizon planning view from the private horiz
 
 # LifeYoda Horizon
 
-Use this skill when the user asks for the LifeYoda horizon view, critical path, track expansion, or week advance view.
+Use this skill when the user asks for the horizon view, the critical path, or one track expanded.
 
-Read these packaged files relative to this skill:
+Report where the long horizon stands. This flow writes nothing.
 
-- `../../config/public.defaults.json`
-- `../../config/horizon.schema.json`
-- `../../docs/horizon-layer.md`
-- `../../private.example/horizon.example.json` only as a shape reference when private config is missing
+Read `../../workflows/horizon.md` and follow it exactly. Its `## Inputs` section lists every
+other file this flow needs — read those first, before doing anything else. Do not substitute
+this file's summary for the workflow.
 
-Resolve private horizon config in this order:
+Today is the current date in the daily config's timezone unless `the request` names one.
 
-1. `$LIFEYODA_CONFIG`
-2. `~/.lifeyoda/horizon.json`
-3. `private/horizon.json` only when running from a LifeYoda source checkout
-
-This workflow is read-only. Do not write to Notion, calendars, source repos, or the horizon config.
-
-Supported modes match the source command: no argument for the backward view, `--track <id>` for one track, and `--week` for this week's advance. Render every date as `YYYY-MM-DD`.
+Building the chain belongs to the setup flow. This flow reports; it does not derive milestones.

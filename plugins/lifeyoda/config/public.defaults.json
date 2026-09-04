@@ -1,13 +1,7 @@
 {
   "toolkit": {
     "name": "LifeYoda",
-    "version": "0.1.0"
-  },
-  "schedule": {
-    "morningRunLocalTime": "07:30",
-    "repeat": "daily",
-    "notifications": "important_updates",
-    "note": "Applies to the Codex Desktop scheduled runtime only. The Claude Code runtime is manually triggered."
+    "version": "1.0.0"
   },
   "sourcePolicy": {
     "lookbackToPreviousDailyPlan": true,
@@ -18,14 +12,26 @@
     "maxFyiItems": 3,
     "avoidExhaustiveSearch": true
   },
+  "week": {
+    "startsOn": "monday",
+    "workingDays": 5,
+    "note": "Defines the window the per-track budget is measured over. Without it 'this week's working hours' has no value: a Sunday-start week and a Monday-start week disagree about which days count, and 5 working days and 7 give different totals from the same workWindows."
+  },
   "horizon": {
     "lookaheadDays": 21,
-    "confidenceLevels": ["VERIFIED", "DERIVED", "INFERRED"]
+    "confidenceLevels": [
+      "VERIFIED",
+      "DERIVED",
+      "INFERRED"
+    ]
   },
   "naming": {
     "template": "{typeEmoji} [{project}] {verb}: {object}",
     "dedupeAnchor": "project + start time",
-    "appliesTo": ["notion_schedule_table", "planning_calendar"],
+    "appliesTo": [
+      "notion_schedule_table",
+      "planning_calendar"
+    ],
     "typeEmoji": {
       "analysis": "🔬",
       "writing": "✍️",
@@ -60,11 +66,33 @@
     "focusFormat": "3-5 bullet points",
     "randomDailyEmoji": true,
     "emojiPool": [
-      "🎁", "🌱", "🧭", "🪐", "🌤", "🍀", "🧩", "🛶", "🔭", "🪁",
-      "🌾", "🏔", "🎈", "🧵", "🪴", "🌊", "🛎", "🎐", "🧊", "🪄"
+      "🎁",
+      "🌱",
+      "🧭",
+      "🪐",
+      "🌤",
+      "🍀",
+      "🧩",
+      "🛶",
+      "🔭",
+      "🪁",
+      "🌾",
+      "🏔",
+      "🎈",
+      "🧵",
+      "🪴",
+      "🌊",
+      "🛎",
+      "🎐",
+      "🧊",
+      "🪄"
     ],
     "templatePath": "templates/daily-plan-page.md",
-    "sections": ["⏰ Schedule", "✅ Today's checklist", "📌 Notes"]
+    "sections": [
+      "⏰ Schedule",
+      "✅ Today's checklist",
+      "📌 Notes"
+    ]
   },
   "dailyJournal": {
     "templatePath": "templates/daily-journal-page.md",
@@ -79,7 +107,11 @@
     ]
   },
   "focusHours": {
-    "strategy": ["worklog_calendars", "git_commits", "ask_user"],
+    "strategy": [
+      "worklog_calendars",
+      "git_commits",
+      "ask_user"
+    ],
     "alwaysConfirm": true
   }
 }

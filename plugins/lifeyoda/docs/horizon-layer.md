@@ -13,7 +13,7 @@ It holds one terminal goal, the terms the horizon spans, the deadlines that cann
 | `private.example/horizon.example.json` | yes | a complete structure with placeholder values |
 | `private/horizon.json` | **no** | the real goal, deadlines, and milestones |
 
-Resolution order is the same as every other private config: `$LIFEYODA_CONFIG`, then `~/.lifeyoda/horizon.json`, then `private/horizon.json`. First hit wins.
+Resolution order is the same as every other private config: `$LIFEYODA_CONFIG/horizon.json`, then `~/.lifeyoda/horizon.json`, then `private/horizon.json`. First hit wins.
 
 ## Backward derivation
 
@@ -33,9 +33,9 @@ The `dependsOn` graph must stay acyclic. A cycle is not a scheduling problem to 
 
 Not every date is knowable to the same degree, and flattening them into one list is how an assumption ends up being treated as a commitment.
 
-**VERIFIED** — read from an authoritative published source, with the source recorded next to it. A published term schedule, a programme's filing deadline. If the source page changes, the date can be re-checked against the same place, which is why `source` is not decorative.
+**VERIFIED** — read from an authoritative published source, with the source recorded next to it. A published release date, a conference's submission deadline, a filing date on an official calendar. If the source page changes, the date can be re-checked against the same place, which is why `source` is not decorative.
 
-**DERIVED** — nobody publishes this date. It was computed backwards from constraints that are themselves verified. A launch date is the usual example: the organisation publishes the submission deadline that follows it, so the launch has to happen far enough before that deadline to leave room for corrections, and the number of weeks is a judgment call.
+**DERIVED** — nobody publishes this date. It was computed backwards from constraints that are themselves verified. A code-freeze date is the usual example: the release date after it is published, so the freeze has to fall far enough before that to leave room for fixes, and the number of weeks is a judgment call.
 
 **INFERRED** — guessed from a pattern, such as last year's date for the same recurring event. Weakest of the three. Never presented as settled, and never used as the anchor for a chain.
 
@@ -51,7 +51,9 @@ A DERIVED deadline with no companion milestone is a defect in the config, and `/
 
 The daily layer already draws one line hard: **a calendar records what was scheduled; whether it got done lives somewhere else.** The Daily Plan checklist and the Journal's carry-forward section hold completion; the planning calendar is only corroboration.
 
-The horizon layer keeps the same line, one level up. Milestone `status` lives in the horizon file and in the tracker rows that mirror it. No calendar event, in the planning calendar or anywhere else, is ever read back to decide whether a milestone completed. A block on the calendar for a milestone means three hours were set aside for it, nothing more. This is why the horizon layer stores `notionPageId` but no calendar event id: the tracker row is the mirror, the calendar is not.
+The horizon layer keeps the same line, one level up. Milestone `status` lives in the horizon file and nowhere else. Nothing mirrors it, and nothing infers it: no calendar event, in the planning calendar or anywhere else, is ever read back to decide whether a milestone completed. A block on the calendar for a milestone means three hours were set aside for it, nothing more.
+
+Notion carries data into this layer but never out of it. The per-track comparison below reads `Focus Hours` and `Projects Touched` from Daily Journals, which are Notion rows. Milestone status does not travel the other way — it is a hand edit to the horizon file, which is the whole point of the rule above.
 
 The practical payoff is that a week where every scheduled block happened and no milestone advanced looks exactly like what it is, instead of looking like progress.
 
@@ -66,6 +68,6 @@ The Draft Day Plan's Assumptions block then shows the week's per-track time budg
 
 ## Weights
 
-`weightPct` is a share of the working week, and the weights are expected to sum to 100. A track at `0` is dormant — it has milestones and dates but no hours of its own, and when it wakes up it borrows from a named track. `/horizon --week` states the borrowing explicitly rather than quietly rebalancing, because the borrowing is the decision worth seeing.
+`weightPct` is a share of the working week, and the weights are expected to sum to 100. A track at `0` is dormant — it has milestones and dates but no hours of its own, and when it wakes up it borrows from a named track. `/daily` states the borrowing explicitly in its Assumptions block rather than quietly rebalancing, because the borrowing is the decision worth seeing.
 
-Weights budget the week; they do not schedule it. `/horizon --week` produces the shape, `/daily` turns one day of that shape into blocks.
+Weights budget the week; they do not schedule it. `/daily` computes the week's shape in its Assumptions block and turns one day of it into blocks. `/horizon` reports the chain and its health, and deliberately does not restate the budget — one computation, one place.

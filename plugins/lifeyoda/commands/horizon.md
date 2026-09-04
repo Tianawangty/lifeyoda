@@ -1,21 +1,20 @@
 ---
-description: Long-horizon view. Counts back from the terminal goal through hard deadlines and track milestones. Reads config only, writes nothing.
-argument-hint: "[nothing | --track <id> | --week]"
+description: Long-horizon view. Counts back from the terminal goal through hard deadlines and track milestones, and reports defects in the chain. Reads config only, writes nothing.
+argument-hint: "[nothing | --track <id> [--evidence] | --demo [--demo-date YYYY-MM-DD]]"
 disable-model-invocation: true
 ---
 
 # /lifeyoda:horizon
 
-Show where the LifeYoda long horizon stands. This command writes nothing.
+Report where the long horizon stands. This flow writes nothing.
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/config/public.defaults.json` for toolkit defaults, including `horizon.lookaheadDays` and `horizon.confidenceLevels`. If this command has been migrated into a Codex skill, read `../../../config/public.defaults.json` relative to the migrated skill instead.
-2. Read `${CLAUDE_PLUGIN_ROOT}/config/horizon.schema.json` as the authority on the private horizon file's shape. If this command has been migrated into a Codex skill, read `../../../config/horizon.schema.json` relative to the migrated skill instead.
-3. Resolve private horizon config in this order:
-   - `$LIFEYODA_CONFIG`
-   - `~/.lifeyoda/horizon.json`
-   - `private/horizon.json` only when running from a LifeYoda source checkout
-4. If no private horizon config resolves, say so and stop. Point at `${CLAUDE_PLUGIN_ROOT}/private.example/horizon.example.json` as the template to copy. Do not invent a goal, a deadline, or a milestone.
+Read `${CLAUDE_PLUGIN_ROOT}/workflows/horizon.md` and follow it exactly. Its `## Inputs`
+section lists every other file this flow needs — read those first, before doing anything
+else. Do not substitute this file's summary for the workflow.
 
-Today is the current date in the daily config's timezone unless `$ARGUMENTS` names a date.
+If this command has been migrated into a Codex skill, read `../../workflows/horizon.md`
+relative to the migrated skill instead, and resolve its Inputs the same way.
 
-Follow the modes and output discipline in the packaged horizon command workflow: no argument for backward view, `--track <id>` for one track, and `--week` for this week's advance. Render every date as `YYYY-MM-DD`.
+Today is the current date in the daily config's timezone unless `$ARGUMENTS` names one.
+
+Building the chain belongs to `/lifeyoda:setup`. This flow reports; it does not derive milestones.

@@ -16,6 +16,10 @@
       "id": "connector_947e0d954944416db111db556030eea6",
       "required": false
     },
+    "outlook-calendar": {
+      "id": "connector_1p_fd0f4f41caa88191a9456514bbffa06d",
+      "required": false
+    },
     "github": {
       "id": "connector_76869538009648d5b282a4bb21c3d157",
       "required": false

@@ -1,0 +1,171 @@
+{
+  "timezone": "America/New_York",
+  "profile": {
+    "workWindows": [
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "13:00",
+        "end": "18:00"
+      }
+    ],
+    "protectedBlocks": [
+      {
+        "name": "lunch",
+        "start": "12:00",
+        "end": "13:00"
+      }
+    ]
+  },
+  "travel": {
+    "bufferMinutes": 30,
+    "virtualLocationPatterns": [
+      "zoom.us",
+      "teams.microsoft",
+      "meet.google",
+      "https://"
+    ]
+  },
+  "sources": {
+    "horizonDays": 14,
+    "maxLookbackDays": 7,
+    "gmail": {
+      "enabled": true,
+      "mode": "label_only",
+      "labelIds": [
+        "demo-label-team",
+        "demo-label-deadlines"
+      ],
+      "excludeCategories": [
+        "promotions",
+        "social"
+      ]
+    },
+    "slack": {
+      "enabled": true,
+      "calendarNotificationApps": [],
+      "highSignalChannels": [],
+      "prioritize": [
+        "dms",
+        "mentions",
+        "threads"
+      ]
+    },
+    "calendars": {
+      "google": {
+        "enabled": true,
+        "mode": "direct",
+        "calendars": [
+          {
+            "name": "Demo Work",
+            "id": "demo-calendar-work",
+            "role": [
+              "fixed_events"
+            ]
+          },
+          {
+            "name": "Demo Planning",
+            "id": "demo-calendar-planning",
+            "role": [
+              "planning_dedupe"
+            ]
+          },
+          {
+            "name": "Demo Worklog",
+            "id": "demo-calendar-worklog",
+            "role": [
+              "worklog"
+            ]
+          }
+        ]
+      },
+      "outlook": {
+        "enabled": false,
+        "mode": "direct",
+        "calendarIds": [],
+        "returnsWallClockAsUtc": false
+      }
+    },
+    "checklistSources": [
+      {
+        "id": "demo-team-checklist",
+        "label": "Team checklist",
+        "type": "manual",
+        "locator": {},
+        "completionRule": "Checkbox checked means complete; unchecked means pending.",
+        "priority": "fyi"
+      }
+    ],
+    "activeProject": {
+      "enabled": true,
+      "primary": {
+        "repo": "demo-org/widget-app",
+        "localPath": "/demo/widget-app",
+        "label": "widget-app"
+      },
+      "secondary": [],
+      "nextStepSources": [
+        "session_report",
+        "project_notes",
+        "recent_commits"
+      ]
+    },
+    "projectMapping": [
+      {
+        "localPath": "/demo/widget-app",
+        "project": "widget-app"
+      },
+      {
+        "localPath": "/demo/widget-research",
+        "project": "widget-research"
+      }
+    ],
+    "jobDeadlines": {
+      "enabled": false,
+      "calendarIds": [],
+      "confidenceMarkers": []
+    }
+  },
+  "naming": {
+    "template": "{typeEmoji} [{project}] {verb}: {object}",
+    "dedupeAnchor": "project + start time",
+    "typeEmoji": {
+      "analysis": "🔬",
+      "writing": "✍️",
+      "reading": "📚",
+      "chore": "🔧"
+    }
+  },
+  "focusHours": {
+    "strategy": [
+      "worklog_calendars",
+      "git_commits",
+      "ask_user"
+    ],
+    "worklogCalendarIds": [
+      "demo-calendar-worklog"
+    ],
+    "alwaysConfirm": true
+  },
+  "destinations": {
+    "dailyPlan": {
+      "enabled": true,
+      "databaseId": "demo-daily-plan-database",
+      "dataSourceUrl": "collection://demo-daily-plan-data-source"
+    },
+    "dailyJournal": {
+      "enabled": true,
+      "databaseId": "demo-daily-journal-database",
+      "dataSourceUrl": "collection://demo-daily-journal-data-source"
+    },
+    "planningCalendar": {
+      "enabled": true,
+      "calendarId": "demo-calendar-planning",
+      "writePolicy": "confirmed_only",
+      "dedupeBy": "read_destination"
+    },
+    "privateReadOnly": []
+  }
+}

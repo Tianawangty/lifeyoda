@@ -3,7 +3,11 @@
   "title": "LifeYoda private local config",
   "type": "object",
   "additionalProperties": false,
-  "required": ["timezone", "sources", "destinations"],
+  "required": [
+    "timezone",
+    "sources",
+    "destinations"
+  ],
   "properties": {
     "timezone": {
       "type": "string",
@@ -15,11 +19,15 @@
       "properties": {
         "workWindows": {
           "type": "array",
-          "items": { "$ref": "#/$defs/timeWindow" }
+          "items": {
+            "$ref": "#/$defs/timeWindow"
+          }
         },
         "protectedBlocks": {
           "type": "array",
-          "items": { "$ref": "#/$defs/namedTimeWindow" }
+          "items": {
+            "$ref": "#/$defs/namedTimeWindow"
+          }
         }
       }
     },
@@ -35,7 +43,9 @@
         "virtualLocationPatterns": {
           "type": "array",
           "description": "Case-insensitive substrings marking a location as virtual. Matching events get no travel buffer.",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -51,21 +61,35 @@
           "type": "integer",
           "description": "Hard cap when walking back to find the previous Daily Plan row."
         },
-        "gmail": { "$ref": "#/$defs/gmailSource" },
-        "slack": { "$ref": "#/$defs/slackSource" },
-        "calendars": { "$ref": "#/$defs/calendarSources" },
+        "gmail": {
+          "$ref": "#/$defs/gmailSource"
+        },
+        "slack": {
+          "$ref": "#/$defs/slackSource"
+        },
+        "calendars": {
+          "$ref": "#/$defs/calendarSources"
+        },
         "checklistSources": {
           "type": "array",
           "description": "Generic checkbox-list sources: course tasks, personal deadline callouts, markdown checklists.",
-          "items": { "$ref": "#/$defs/checklistSource" }
+          "items": {
+            "$ref": "#/$defs/checklistSource"
+          }
         },
-        "activeProject": { "$ref": "#/$defs/activeProject" },
+        "activeProject": {
+          "$ref": "#/$defs/activeProject"
+        },
         "projectMapping": {
           "type": "array",
           "description": "Maps a repo to a Daily Journal 'Projects Touched' option. Only list repos that exist locally.",
-          "items": { "$ref": "#/$defs/projectMappingEntry" }
+          "items": {
+            "$ref": "#/$defs/projectMappingEntry"
+          }
         },
-        "jobDeadlines": { "$ref": "#/$defs/jobDeadlineSource" }
+        "jobDeadlines": {
+          "$ref": "#/$defs/jobDeadlineSource"
+        }
       }
     },
     "naming": {
@@ -83,7 +107,9 @@
         },
         "typeEmoji": {
           "type": "object",
-          "additionalProperties": { "type": "string" },
+          "additionalProperties": {
+            "type": "string"
+          },
           "description": "Work-type label to emoji. Keys are the vocabulary; values are single emoji."
         }
       }
@@ -97,12 +123,18 @@
           "type": "array",
           "description": "Ordered fallback chain. The first strategy that yields data wins; the derivation is always shown before writing.",
           "items": {
-            "enum": ["worklog_calendars", "git_commits", "ask_user", "planned_blocks"]
+            "enum": [
+              "worklog_calendars",
+              "git_commits",
+              "ask_user"
+            ]
           }
         },
         "worklogCalendarIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "alwaysConfirm": {
           "type": "boolean",
@@ -114,13 +146,21 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "dailyPlan": { "$ref": "#/$defs/notionDestination" },
-        "dailyJournal": { "$ref": "#/$defs/notionDestination" },
-        "planningCalendar": { "$ref": "#/$defs/calendarDestination" },
+        "dailyPlan": {
+          "$ref": "#/$defs/notionDestination"
+        },
+        "dailyJournal": {
+          "$ref": "#/$defs/notionDestination"
+        },
+        "planningCalendar": {
+          "$ref": "#/$defs/calendarDestination"
+        },
         "privateReadOnly": {
           "type": "array",
           "description": "Sources the owner reads but this toolkit must never write. Not part of the public default config.",
-          "items": { "$ref": "#/$defs/readOnlySource" }
+          "items": {
+            "$ref": "#/$defs/readOnlySource"
+          }
         }
       }
     }
@@ -128,36 +168,64 @@
   "$defs": {
     "timeWindow": {
       "type": "object",
-      "required": ["start", "end"],
+      "required": [
+        "start",
+        "end"
+      ],
       "additionalProperties": false,
       "properties": {
-        "start": { "type": "string" },
-        "end": { "type": "string" }
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        }
       }
     },
     "namedTimeWindow": {
       "type": "object",
-      "required": ["name", "start", "end"],
+      "required": [
+        "name",
+        "start",
+        "end"
+      ],
       "additionalProperties": false,
       "properties": {
-        "name": { "type": "string" },
-        "start": { "type": "string" },
-        "end": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        }
       }
     },
     "gmailSource": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "mode": { "enum": ["primary_inbox", "label_only"] },
+        "enabled": {
+          "type": "boolean"
+        },
+        "mode": {
+          "enum": [
+            "primary_inbox",
+            "label_only"
+          ]
+        },
         "labelIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "excludeCategories": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -165,18 +233,26 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
+        "enabled": {
+          "type": "boolean"
+        },
         "calendarNotificationApps": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "highSignalChannels": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "prioritize": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -184,23 +260,45 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "google": { "$ref": "#/$defs/googleCalendarReadSource" },
-        "outlook": { "$ref": "#/$defs/calendarReadSource" }
+        "google": {
+          "$ref": "#/$defs/googleCalendarReadSource"
+        },
+        "outlook": {
+          "$ref": "#/$defs/calendarReadSource"
+        }
       }
     },
     "calendarReadSource": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "mode": { "enum": ["direct", "slack_proxy", "disabled"] },
+        "enabled": {
+          "type": "boolean"
+        },
+        "mode": {
+          "enum": [
+            "direct",
+            "slack_proxy"
+          ],
+          "description": "How the calendar is reached. Use `enabled: false` to switch it off."
+        },
         "calendarIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          },
+          "description": "Bare calendar ids, kept for configs written before `calendars` existed. Both forms are read. An id listed here carries no role."
         },
         "returnsWallClockAsUtc": {
           "type": "boolean",
           "description": "True only for a connector that labels times with a zone it does not actually use, so the string must be read as local and NOT converted. Outlook is not such a connector: outlook_calendar_search returns a wall-clock string in the zone it names, so a timeZone of 'UTC' means real UTC and must be converted. Leave false unless a connector is proven otherwise against event-body times."
+        },
+        "calendars": {
+          "type": "array",
+          "description": "Named calendars with roles, the same shape the Google branch uses. Prefer this over calendarIds: a bare id cannot carry a role, so a planning or worklog calendar on this service cannot be marked as one.",
+          "items": {
+            "$ref": "#/$defs/namedCalendar"
+          }
         }
       }
     },
@@ -208,26 +306,49 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "mode": { "enum": ["direct", "slack_proxy", "disabled"] },
+        "enabled": {
+          "type": "boolean"
+        },
+        "mode": {
+          "enum": [
+            "direct",
+            "slack_proxy"
+          ],
+          "description": "How the calendar is reached. Use `enabled: false` to switch it off."
+        },
         "calendars": {
           "type": "array",
-          "items": { "$ref": "#/$defs/namedCalendar" }
+          "items": {
+            "$ref": "#/$defs/namedCalendar"
+          }
         }
       }
     },
     "namedCalendar": {
       "type": "object",
-      "required": ["name", "id"],
+      "required": [
+        "name",
+        "id"
+      ],
       "additionalProperties": false,
       "properties": {
-        "name": { "type": "string" },
-        "id": { "type": "string" },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
         "role": {
           "type": "array",
           "description": "What this calendar is read for.",
           "items": {
-            "enum": ["fixed_events", "job_deadlines", "worklog", "planning_dedupe", "personal"]
+            "enum": [
+              "fixed_events",
+              "job_deadlines",
+              "worklog",
+              "planning_dedupe",
+              "personal"
+            ]
           }
         }
       }
@@ -235,17 +356,21 @@
     "checklistSource": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "type"],
+      "required": [
+        "id",
+        "label",
+        "type"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "label": { "type": "string" },
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
         "type": {
           "enum": [
             "notion_checkbox_block",
-            "notion_database",
-            "local_markdown_checklist",
-            "gmail_label",
-            "drive_doc",
             "manual"
           ]
         },
@@ -253,9 +378,14 @@
           "type": "object",
           "additionalProperties": true
         },
-        "completionRule": { "type": "string" },
+        "completionRule": {
+          "type": "string"
+        },
         "priority": {
-          "enum": ["key", "fyi"],
+          "enum": [
+            "key",
+            "fyi"
+          ],
           "description": "Whether unchecked items from this source default to Key items or Later/FYI."
         }
       }
@@ -264,23 +394,25 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "provider": { "enum": ["github", "local_git", "manual"] },
-        "primary": { "$ref": "#/$defs/projectRepo" },
+        "enabled": {
+          "type": "boolean"
+        },
+        "primary": {
+          "$ref": "#/$defs/projectRepo"
+        },
         "secondary": {
           "type": "array",
-          "items": { "$ref": "#/$defs/projectRepo" }
+          "items": {
+            "$ref": "#/$defs/projectRepo"
+          }
         },
         "nextStepSources": {
           "type": "array",
           "items": {
             "enum": [
-              "issues",
-              "pull_requests",
               "recent_commits",
               "session_report",
               "project_notes",
-              "readme",
               "manual"
             ]
           }
@@ -289,20 +421,29 @@
     },
     "projectRepo": {
       "type": "object",
-      "required": ["localPath"],
+      "required": [
+        "localPath"
+      ],
       "additionalProperties": false,
       "properties": {
-        "repo": { "type": "string" },
+        "repo": {
+          "type": "string"
+        },
         "localPath": {
           "type": "string",
           "description": "Absolute path, or a single $VAR reference expanded from the environment at run time. Use the $VAR form for any repo whose path embeds personal data, such as an account email inside a cloud-storage folder name. Three failures are equivalent and all must be reported, never silently skipped: the variable is unset, the expanded path does not exist, or it exists but is not a git repository."
         },
-        "label": { "type": "string" }
+        "label": {
+          "type": "string"
+        }
       }
     },
     "projectMappingEntry": {
       "type": "object",
-      "required": ["localPath", "project"],
+      "required": [
+        "localPath",
+        "project"
+      ],
       "additionalProperties": false,
       "properties": {
         "localPath": {
@@ -319,15 +460,21 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
+        "enabled": {
+          "type": "boolean"
+        },
         "calendarIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "confidenceMarkers": {
           "type": "array",
           "description": "Strings in the event description marking how reliable the date is. Surfaced verbatim, never dropped.",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -335,11 +482,23 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "databaseId": { "type": "string" },
+        "enabled": {
+          "type": "boolean"
+        },
+        "databaseId": {
+          "type": "string"
+        },
         "dataSourceUrl": {
           "type": "string",
           "description": "collection://... URL. Page creation targets the data source, not the database id."
+        },
+        "sharing": {
+          "enum": [
+            "private",
+            "shared",
+            "unknown"
+          ],
+          "description": "Who else can see what is written here. `private` means only the account that owns this config. `shared` means at least one other person can open it. Optional; absent means `unknown`, which is treated exactly like `shared` — a runtime that cannot establish who can read a destination has to assume someone can. This governs how much detail may be written, never whether the write happens."
         }
       }
     },
@@ -347,23 +506,58 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "calendarId": { "type": "string" },
-        "writePolicy": { "enum": ["confirmed_only", "disabled"] },
+        "enabled": {
+          "type": "boolean"
+        },
+        "calendarId": {
+          "type": "string"
+        },
+        "sharing": {
+          "enum": [
+            "private",
+            "shared",
+            "unknown"
+          ],
+          "description": "Who else can see what is written here. `private` means only the account that owns this config. `shared` means at least one other person can open it. Optional; absent means `unknown`, which is treated exactly like `shared` — a runtime that cannot establish who can read a destination has to assume someone can. This governs how much detail may be written, never whether the write happens."
+        },
+        "provider": {
+          "enum": [
+            "google",
+            "outlook"
+          ],
+          "description": "Which service holds the planning calendar. Optional; absent means google, so a config written before this field keeps working unchanged."
+        },
+        "writePolicy": {
+          "enum": [
+            "confirmed_only",
+            "disabled"
+          ]
+        },
         "dedupeBy": {
-          "enum": ["read_destination", "stored_event_id"],
-          "description": "read_destination re-reads the calendar before writing and stores no sync state anywhere."
+          "enum": [
+            "read_destination"
+          ],
+          "description": "Dedupe re-reads the calendar before writing and stores no sync state anywhere. Storing event ids on rows covers only tasks that happen to be rows, and goes stale the moment an event is deleted by hand."
         }
       }
     },
     "readOnlySource": {
       "type": "object",
-      "required": ["id", "note"],
+      "required": [
+        "id",
+        "note"
+      ],
       "additionalProperties": true,
       "properties": {
-        "id": { "type": "string" },
-        "label": { "type": "string" },
-        "note": { "type": "string" }
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
       }
     }
   }

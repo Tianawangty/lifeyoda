@@ -1,11 +1,11 @@
 {
   "name": "lifeyoda",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Daily planning workflows for morning brief, confirmed plan application, wrapup journal, and long-horizon planning.",
   "author": {
     "name": "Tiana Wang",
     "url": "https://github.com/Tianawangty"
   },
-  "repository": "https://github.com/Tianawangty/LifeYoda",
-  "license": "Proprietary"
+  "repository": "https://github.com/Tianawangty/lifeyoda",
+  "license": "MIT"
 }

@@ -7,7 +7,7 @@ Required behavior:
 - Create one row per date.
 - Use the fixed toolkit date-title format defined in `templates/daily-plan-page.md`.
 - Pick one random emoji for the new Daily row/icon.
-- Set `Status` to `planned` when created by the daily workflow.
+- Set `Status` to `Planned` when created by the daily workflow. Select options are case-sensitive in Notion.
 - Write `Focus` as 3-5 bullet points.
 - Build the page body from `templates/daily-plan-page.md`.
 - Do not put page-template or format-reference choices in private config.

@@ -2,16 +2,31 @@
   "timezone": "Area/City",
   "profile": {
     "workWindows": [
-      { "start": "09:00", "end": "12:00" },
-      { "start": "13:00", "end": "18:00" }
+      {
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "start": "13:00",
+        "end": "18:00"
+      }
     ],
     "protectedBlocks": [
-      { "name": "lunch", "start": "12:00", "end": "13:00" }
+      {
+        "name": "lunch",
+        "start": "12:00",
+        "end": "13:00"
+      }
     ]
   },
   "travel": {
     "bufferMinutes": 30,
-    "virtualLocationPatterns": ["zoom.us", "teams.microsoft", "meet.google", "https://"]
+    "virtualLocationPatterns": [
+      "zoom.us",
+      "teams.microsoft",
+      "meet.google",
+      "https://"
+    ]
   },
   "sources": {
     "horizonDays": 14,
@@ -20,13 +35,24 @@
       "enabled": false,
       "mode": "label_only",
       "labelIds": [],
-      "excludeCategories": ["promotions", "social"]
+      "excludeCategories": [
+        "promotions",
+        "social"
+      ]
     },
     "slack": {
       "enabled": false,
-      "calendarNotificationApps": ["Google Calendar", "Outlook Calendar"],
+      "calendarNotificationApps": [
+        "Google Calendar",
+        "Outlook Calendar"
+      ],
       "highSignalChannels": [],
-      "prioritize": ["dms", "mentions", "threads", "calendar_notifications"]
+      "prioritize": [
+        "dms",
+        "mentions",
+        "threads",
+        "calendar_notifications"
+      ]
     },
     "calendars": {
       "google": {
@@ -36,12 +62,16 @@
           {
             "name": "school",
             "id": "replace-with-calendar-id",
-            "role": ["fixed_events"]
+            "role": [
+              "fixed_events"
+            ]
           },
           {
             "name": "planning",
             "id": "replace-with-planning-calendar-id",
-            "role": ["planning_dedupe"]
+            "role": [
+              "planning_dedupe"
+            ]
           }
         ]
       },
@@ -63,14 +93,17 @@
     ],
     "activeProject": {
       "enabled": true,
-      "provider": "local_git",
       "primary": {
         "repo": "owner/repository",
         "localPath": "/absolute/path/to/primary-repo",
         "label": "ProjectName"
       },
       "secondary": [],
-      "nextStepSources": ["session_report", "project_notes", "recent_commits"]
+      "nextStepSources": [
+        "session_report",
+        "project_notes",
+        "recent_commits"
+      ]
     },
     "projectMapping": [
       {
@@ -99,7 +132,11 @@
     }
   },
   "focusHours": {
-    "strategy": ["worklog_calendars", "git_commits", "ask_user"],
+    "strategy": [
+      "worklog_calendars",
+      "git_commits",
+      "ask_user"
+    ],
     "worklogCalendarIds": [],
     "alwaysConfirm": true
   },

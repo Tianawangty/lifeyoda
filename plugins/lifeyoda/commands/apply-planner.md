@@ -1,24 +1,20 @@
 ---
 description: Write a confirmed Draft Day Plan to the Notion Daily Plan row and mirror its blocks to the planning calendar.
-argument-hint: "[optional: date, defaults to the draft's date]"
+argument-hint: "[date, defaults to the draft's date | --demo [--demo-date YYYY-MM-DD]]"
 disable-model-invocation: true
 ---
 
 # /lifeyoda:apply-planner
 
-Run the LifeYoda apply-daily-plan workflow. Only run after the user has confirmed a Draft Day Plan.
+Write a confirmed Draft Day Plan. Run it only after the user has confirmed one.
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/workflows/apply-daily-plan.md` and follow it exactly. If this command has been migrated into a Codex skill, read `../../../workflows/apply-daily-plan.md` relative to the migrated skill instead.
-2. Read `${CLAUDE_PLUGIN_ROOT}/config/public.defaults.json`.
-3. Resolve private config in this order:
-   - `$LIFEYODA_CONFIG`
-   - `~/.lifeyoda/local.json`
-   - `private/local.json` only when running from a LifeYoda source checkout
-4. If there is no confirmed draft in this conversation, stop and say so. Never reconstruct a plan from memory and write it.
+Read `${CLAUDE_PLUGIN_ROOT}/workflows/apply-daily-plan.md` and follow it exactly. Its `## Inputs`
+section lists every other file this flow needs — read those first, before doing anything
+else. Do not substitute this file's summary for the workflow.
 
-Writes exactly two destinations:
+If this command has been migrated into a Codex skill, read `../../workflows/apply-daily-plan.md`
+relative to the migrated skill instead, and resolve its Inputs the same way.
 
-- one Notion Daily Plan row for the date
-- the confirmed timed blocks on the configured planning calendar
+`$ARGUMENTS` may name a date; it defaults to the draft's own date.
 
-Never write a Daily Journal here. Never write to any calendar other than the configured planning calendar. Never add helper properties to the Notion databases.
+Never reconstruct a plan from memory. If no confirmed draft exists in this conversation, stop and say so.

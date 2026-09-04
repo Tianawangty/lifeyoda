@@ -5,22 +5,14 @@ description: Apply a confirmed LifeYoda Draft Day Plan to the configured Daily P
 
 # LifeYoda Apply Planner
 
-Use this skill only when the user asks to apply a confirmed LifeYoda Draft Day Plan.
+Use this skill when the user confirms a Draft Day Plan and asks for it to be written.
 
-Read these packaged files relative to this skill:
+Write a confirmed Draft Day Plan. Run it only after the user has confirmed one.
 
-- `../../workflows/apply-daily-plan.md`
-- `../../config/public.defaults.json`
-- `../../templates/daily-plan-page.md`
+Read `../../workflows/apply-daily-plan.md` and follow it exactly. Its `## Inputs` section lists every
+other file this flow needs — read those first, before doing anything else. Do not substitute
+this file's summary for the workflow.
 
-Resolve private config in this order:
+`the request` may name a date; it defaults to the draft's own date.
 
-1. `$LIFEYODA_CONFIG`
-2. `~/.lifeyoda/local.json`
-3. `private/local.json` only when running from a LifeYoda source checkout
-
-Never run this workflow without an explicit confirmed draft in the current conversation. If no confirmed draft exists, stop and say so; do not reconstruct a plan from memory.
-
-Write only the destinations allowed by the workflow: one Daily Plan row and confirmed timed blocks on the configured planning calendar. Do not create a Daily Journal, write other calendars, write task trackers, or add helper properties to Notion databases.
-
-Return a concise apply report with created, updated, skipped, unavailable, and collision items.
+Never reconstruct a plan from memory. If no confirmed draft exists in this conversation, stop and say so.

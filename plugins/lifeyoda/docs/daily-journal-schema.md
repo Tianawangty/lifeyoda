@@ -16,8 +16,8 @@ Icon rule:
 
 Status rule:
 
-- All planned checklist items completed: set matching Daily Plan `Status` to `done`.
-- Partial completion: set matching Daily Plan `Status` to `partial`.
+- All planned checklist items completed: set matching Daily Plan `Status` to `Done`.
+- Partial completion: set matching Daily Plan `Status` to `Partial`.
 
 Extra bonus rule:
 

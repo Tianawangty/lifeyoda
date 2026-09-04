@@ -13,7 +13,7 @@ This directory separates public toolkit configuration from private user configur
 All real user-specific files live in one directory, resolved in this order, first hit wins:
 
 ```text
-$LIFEYODA_CONFIG   # explicit override
+$LIFEYODA_CONFIG   # explicit override; a directory, like the other two
 ~/.lifeyoda/       # a real directory, or a symlink to a folder you back up
 private/           # source checkout only, and only when that is the working directory
 ```
@@ -24,7 +24,6 @@ The files that directory holds:
 
 - `local.json` — the private config this schema describes
 - `horizon.json` — the long-horizon goal, deadlines, and milestones, if you use `/horizon`
-- `state.json` — run state written by the workflows
 - `NOTES.md` — optional free-form notes, read by nothing
 
 Do not commit real Notion IDs, Slack IDs, Gmail labels, calendar IDs, course sources, active repo choices, or personal workflow state.

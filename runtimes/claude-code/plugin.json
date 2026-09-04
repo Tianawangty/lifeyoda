@@ -1,6 +1,0 @@
-{
-  "name": "lifeyoda",
-  "version": "0.1.0",
-  "description": "Legacy Claude Code scaffold kept for historical context. The installable plugin now lives in plugins/lifeyoda/.",
-  "commands": "./commands"
-}

@@ -5,24 +5,14 @@ description: Run the LifeYoda morning brief and draft day plan workflow when the
 
 # LifeYoda Daily
 
-Use this skill for the LifeYoda morning brief and draft day plan flow.
+Use this skill when the user asks for their morning brief, their day plan, or LifeYoda daily planning.
 
-Read these packaged files relative to this skill:
+Produce the Morning Brief and the Draft Day Plan. This flow writes nothing.
 
-- `../../workflows/morning-brief-and-plan.md`
-- `../../config/public.defaults.json`
-- `../../private.example/local.example.json` only as a shape reference when private config is missing
+Read `../../workflows/morning-brief-and-plan.md` and follow it exactly. Its `## Inputs` section lists every
+other file this flow needs — read those first, before doing anything else. Do not substitute
+this file's summary for the workflow.
 
-Resolve private config in this order:
+Target date is today in the config timezone unless `the request` names one.
 
-1. `$LIFEYODA_CONFIG`
-2. `~/.lifeyoda/local.json`
-3. `private/local.json` only when running from a LifeYoda source checkout
-
-The workflow is read-only. Do not write to Notion, calendars, Slack, Gmail, GitHub, or checklist sources. If no private config resolves, say that LifeYoda private config is missing and stop; do not invent sources.
-
-Before reading any source, run the workflow's Config Health check: expand every `$VAR` `localPath` and verify it resolves. An unset variable, a path that does not exist, and a path that is not a git repository are equivalent failures. Lead the brief with the result and name each failure rather than reading it as a repo with no commits.
-
-Target date is today in the configured timezone unless the user names a date.
-
-Output the workflow's `# Morning Brief` and `# Draft Day Plan` sections. Ask the one required question round between them. When the user confirms the draft, tell them to run the apply-planner flow in the same conversation.
+When the user confirms the draft, stop and tell them to run the apply-planner flow. Do not run it yourself and do not write anything from this skill, even if the user has already said the draft looks right. Confirming a draft is not the same as asking for it to be written.

@@ -44,7 +44,7 @@ ${CLAUDE_PLUGIN_ROOT}/config/public.defaults.json
 
 Each command also carries a fallback for the case where it has been migrated into a Codex
 skill, expressed relative to the skill's own directory (`../../workflows/…`). A skill sits
-at `<plugin>/skills/<name>/`, so the correct depth is two levels, not three. A wrong depth
+at `<plugin>/codex-skills/<name>/`, so the correct depth is two levels, not three. A wrong depth
 here fails silently: the read simply finds nothing.
 
 ## Installs are keyed on the plugin version

@@ -15,7 +15,7 @@
     "calendar",
     "workflow"
   ],
-  "skills": "./skills/",
+  "skills": "./codex-skills/",
   "apps": "./.app.json",
   "interface": {
     "displayName": "LifeYoda",

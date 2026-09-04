@@ -22,7 +22,7 @@ LifeYoda/
 ├─ .agents/plugins/marketplace.json    Codex marketplace surface
 └─ plugins/lifeyoda/      the product — single source of truth
      ├─ commands/         Claude Code entry points
-     ├─ skills/           Codex entry points
+     ├─ codex-skills/     Codex entry points
      ├─ workflows/        the actual logic, read by both
      ├─ config/           public defaults and JSON schemas
      ├─ docs/             design documentation
@@ -41,7 +41,7 @@ The entry points differ per runtime, the logic does not:
                 plugins/lifeyoda/
                        │
         ┌──────────────┴──────────────┐
-   commands/*.md              skills/*/SKILL.md
+   commands/*.md              codex-skills/*/SKILL.md
    (Claude Code)                  (Codex)
         └──────────────┬──────────────┘
                        ▼

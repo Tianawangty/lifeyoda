@@ -522,7 +522,7 @@ def check_command_frontmatter(report: Report) -> None:
 def check_skill_frontmatter(report: Report) -> None:
     """Every Codex skill file must declare a name and description."""
     _check_frontmatter(report, "skill frontmatter",
-                       list((PLUGIN / "skills").glob("*/SKILL.md")), SKILL_REQUIRED_KEYS)
+                       list((PLUGIN / "codex-skills").glob("*/SKILL.md")), SKILL_REQUIRED_KEYS)
 
 
 def _resolves(ref: str, source: Path) -> bool:
@@ -535,8 +535,8 @@ def _resolves(ref: str, source: Path) -> bool:
     """
     bases = [source.parent, REPO, PLUGIN]
     if ref.startswith("../../"):
-        # Fallbacks in command files are written for a skill at <plugin>/skills/<name>/.
-        bases.append(PLUGIN / "skills" / "any-skill")
+        # Fallbacks in command files are written for a skill at <plugin>/codex-skills/<name>/.
+        bases.append(PLUGIN / "codex-skills" / "any-skill")
     # normpath rather than Path.exists so `..` collapses textually; the intermediate
     # directory of a hypothetical skill does not have to exist on disk.
     return any(os.path.exists(os.path.normpath(base / ref)) for base in bases)
@@ -725,7 +725,7 @@ def check_entry_surface_parity(report: Report) -> None:
     detail: list[str] = []
     checked = 0
     for command in sorted((PLUGIN / "commands").glob("*.md")):
-        skill = PLUGIN / "skills" / command.stem / "SKILL.md"
+        skill = PLUGIN / "codex-skills" / command.stem / "SKILL.md"
         if not skill.exists():
             detail.append(f"commands/{command.name}: no matching skill")
             continue

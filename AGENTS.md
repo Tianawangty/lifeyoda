@@ -9,7 +9,7 @@ that file is repeated here.
 
 ## Skill surface
 
-Codex enters through `plugins/lifeyoda/skills/*/SKILL.md`. The core daily loop is four
+Codex enters through `plugins/lifeyoda/codex-skills/*/SKILL.md`. The core daily loop is four
 skills:
 
 ```
@@ -37,12 +37,20 @@ files relative to its own directory:
 ../../config/public.defaults.json
 ```
 
-A skill sits at `<plugin>/skills/<name>/`, so packaged files are exactly two levels up.
+A skill sits at `<plugin>/codex-skills/<name>/`, so packaged files are exactly two levels up.
 Getting the depth wrong fails silently — the read finds nothing rather than erroring.
 
 ## Manifest
 
-`plugins/lifeyoda/.codex-plugin/plugin.json` points `skills` at `./skills/` and `apps` at
+The directory is `codex-skills/`, not `skills/`, for one reason: Claude Code auto-discovers
+a `skills/` directory in any plugin root, by convention rather than by declaration. A plugin
+that ships both `commands/` and `skills/` therefore shows a Claude Code user twelve entries
+for six flows — each one twice, the second copy named `/lifeyoda:lifeyoda-daily` and carrying
+a description written for Codex. Renaming the directory hides it from that convention while
+Codex still finds it, because Codex reads the path from the manifest below. Do not rename it
+back.
+
+`plugins/lifeyoda/.codex-plugin/plugin.json` points `skills` at `./codex-skills/` and `apps` at
 `./.app.json`. It also carries an `interface` block that Codex renders directly:
 `displayName`, `shortDescription`, `longDescription`, `developerName`, `category`,
 `capabilities` (`Interactive`, `Read`, `Write`), three `defaultPrompt` strings, and

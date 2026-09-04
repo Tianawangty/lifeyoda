@@ -1,0 +1,61 @@
+{
+  "$comment": "How demo mode turns these fixtures into dates. Read this file first.",
+  "dateBase": "run_date",
+  "dateBaseNote": "Demo output is dated around the day the command runs, never around a date baked into this repository. A fixed demo date reads as abandoned within months; a relative one is always plausible.",
+  "offsetFormat": {
+    "syntax": "T{+|-}{days} HH:MM",
+    "examples": {
+      "T+0 10:00": "today at 10:00",
+      "T-1 18:40": "yesterday at 18:40",
+      "T+1 15:00": "tomorrow at 15:00"
+    },
+    "appliesTo": [
+      "calendar-events.json",
+      "notion-previous-day.json",
+      "mail-and-messages.json",
+      "active-project.json"
+    ],
+    "renderedIn": "the timezone in fixtures/local.json"
+  },
+  "horizonAnchor": {
+    "date": "2026-06-17",
+    "appliesTo": [
+      "horizon.json"
+    ],
+    "rule": "Shift every date in horizon.json forward by (run date - anchor). The chain's internal spacing is what matters, and shifting preserves it exactly.",
+    "why": "horizon.json is validated against the real config/horizon.schema.json, which requires YYYY-MM-DD dates, so it cannot hold offsets. The anchor lives here instead. The schema sets additionalProperties: false at the top level, so it could not hold this field either."
+  },
+  "fixedDateOverride": {
+    "flag": "--demo-date YYYY-MM-DD",
+    "rule": "Treat the given date as the run date. Everything else follows from it.",
+    "why": "Comparing two runs of a changed workflow needs the dates held still. Without this, a diff between yesterday's output and today's is all date noise."
+  },
+  "expectedShape": {
+    "note": "What a correct demo run of /lifeyoda:daily produces, so a regression is visible without reading the whole output.",
+    "keyItems": [
+      "a standup today at 10:00 with a travel buffer",
+      "a horizon milestone past due",
+      "one checklist item carried over from yesterday",
+      "a teammate's email asking which PR should land first"
+    ],
+    "laterFyi": [
+      "a design review tomorrow",
+      "a hard deadline inside the lookahead",
+      "a Slack message about a changed event schema"
+    ],
+    "previousDayStatus": "Partial, with exactly one unchecked checklist item",
+    "notPresent": [
+      "the conference submission message must not become a checklist item",
+      "no Outlook events — outlook is disabled in fixtures/local.json"
+    ]
+  },
+  "textTokens": {
+    "syntax": "{T+n} / {T-n} for a date relative to the run date; {milestone-or-deadline-id} for a date taken from horizon.json after the anchor shift",
+    "rule": "Resolve every token to a real date before the text is shown or quoted.",
+    "why": "Fixture prose used to contain frozen weekday words and absolute dates. Once the run date floats, an email saying 'before Wednesday' or 'closes June 24' contradicts the calendar and the horizon — and the workflow forbids paraphrasing a quoted deadline away.",
+    "appliesTo": [
+      "mail-and-messages.json",
+      "notion-previous-day.json"
+    ]
+  }
+}

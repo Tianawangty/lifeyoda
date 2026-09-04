@@ -1,0 +1,100 @@
+{
+  "$comment": "The two Notion databases LifeYoda reads and writes. This file is the authority on their shape: /lifeyoda:setup creates them from it, /lifeyoda:doctor verifies an existing pair against it. Property names are fixed by templates/daily-plan-page.md and templates/daily-journal-page.md and are NOT configurable — the workflows address them by name. Notion property names and select options are case-sensitive.",
+  "createOrder": [
+    "dailyPlan",
+    "dailyJournal"
+  ],
+  "createOrderReason": "The two databases point at each other. Notion creates the reverse side of a relation automatically, so exactly one side may be declared. Daily Plan is created first without any relation; Daily Journal is created second carrying the relation, which makes Notion add the plan-side property named in synced_property_name. Declaring the relation on both sides produces two unrelated one-way relations instead of one linked pair.",
+  "databases": {
+    "dailyPlan": {
+      "title": "Daily Plan",
+      "icon": "🗓️",
+      "titleProperty": "Daily",
+      "dateKey": "title",
+      "dateKeyNote": "Rows are looked up and deduped by their title, never by the Date column.",
+      "properties": {
+        "Daily": {
+          "type": "title",
+          "format": "{weekday_short}, {month_full} {day}, {year}",
+          "example": "Wed, June 17, 2026",
+          "note": "The date key. One row per date."
+        },
+        "Date": {
+          "type": "created_time",
+          "writable": false,
+          "note": "Stamped by Notion when the page is created and never written by this toolkit. A Date that disagrees with the title means the row was backfilled, which is a signal rather than an error."
+        },
+        "Focus": {
+          "type": "rich_text",
+          "note": "3-5 bullet points summarizing the day."
+        },
+        "Status": {
+          "type": "select",
+          "options": [
+            "Planned",
+            "Done",
+            "Partial"
+          ],
+          "note": "Planned on apply; Done or Partial on wrapup."
+        }
+      },
+      "autoCreatedProperties": {
+        "📝 Daily Journal": {
+          "type": "relation",
+          "createdBy": "the dailyJournal relation's synced_property_name",
+          "note": "Not declared here. Notion adds it when Daily Journal is created."
+        }
+      },
+      "pageIcon": {
+        "source": "dailyPlan.emojiPool in config/public.defaults.json",
+        "note": "One emoji picked at random per row. Never ✅ or 📓 — those belong to the journal."
+      }
+    },
+    "dailyJournal": {
+      "title": "Daily Journal",
+      "icon": "📓",
+      "titleProperty": "Day",
+      "properties": {
+        "Day": {
+          "type": "title",
+          "format": "{weekday_short}, {month_full} {day}, {year}",
+          "example": "Wed, June 17, 2026",
+          "note": "Must match the title of the Daily Plan row it links to."
+        },
+        "Date": {
+          "type": "date",
+          "writable": true,
+          "format": "YYYY-MM-DD",
+          "note": "The day being journaled. Unlike the plan's Date this one is writable, and must be correct even when the journal is written late."
+        },
+        "Focus Hours": {
+          "type": "number",
+          "note": "Derived per focusHours.strategy. The derivation is always shown before writing."
+        },
+        "Track Hours": {
+          "type": "rich_text",
+          "format": "<track-id> <hours>; <track-id> <hours>",
+          "example": "research 3; job 2",
+          "note": "How the day's Focus Hours split across horizon tracks. Written by wrapup from the worklog calendar, which carries a [project] tag on every block; the project maps to a track through the horizon's track.projects. A day that touched one track carries that track and the whole number. Left empty when no horizon config exists — the daily budget comparison is then simply not made."
+        },
+        "Projects Touched": {
+          "type": "multi_select",
+          "options": [],
+          "note": "Left empty at creation. Options come from the user's own sources.projectMapping; the workflows only ever select an option that already exists and never invent one."
+        },
+        "☑️ Daily Plan": {
+          "type": "relation",
+          "to": "dailyPlan",
+          "dual": true,
+          "syncedPropertyName": "📝 Daily Journal",
+          "required": true,
+          "note": "A journal must never exist without its matching plan row."
+        }
+      },
+      "pageIcon": {
+        "source": "dailyJournal.iconWhenDone and dailyJournal.iconWhenPartial in config/public.defaults.json",
+        "note": "✅ when every planned checklist item is complete, 📓 when partial."
+      }
+    }
+  }
+}

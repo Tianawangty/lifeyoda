@@ -1,0 +1,57 @@
+{
+  "$comment": "Invented calendar events for demo mode. Dates are offsets from the run date; see manifest.json. Two worklog blocks on T-1 overlap between 10:30 and 11:00 on purpose: that is the case wrapup has to ask about rather than net down.",
+  "events": [
+    {
+      "calendarId": "demo-calendar-work",
+      "summary": "Standup — v2 pilot readout",
+      "start": "T+0 10:00",
+      "end": "T+0 11:00",
+      "availability": "busy",
+      "responseStatus": "accepted",
+      "location": "Room 214, Bridge Building",
+      "link": "https://calendar.example.com/demo-event-1"
+    },
+    {
+      "calendarId": "demo-calendar-work",
+      "summary": "Design review — onboarding flow",
+      "start": "T+0 15:30",
+      "end": "T+0 17:00",
+      "availability": "busy",
+      "responseStatus": "accepted",
+      "location": "https://meet.google.com/demo-seminar",
+      "link": "https://calendar.example.com/demo-event-2"
+    },
+    {
+      "calendarId": "demo-calendar-work",
+      "summary": "User research sync — interview findings",
+      "start": "T+1 15:00",
+      "end": "T+1 16:30",
+      "location": "https://zoom.us/j/demo",
+      "link": "https://calendar.example.com/demo-event-3"
+    },
+    {
+      "calendarId": "demo-calendar-planning",
+      "summary": "🔬 [widget-app] Run: pilot rollout check",
+      "start": "T-1 09:00",
+      "end": "T-1 11:00",
+      "location": "",
+      "link": "https://calendar.example.com/demo-event-4"
+    },
+    {
+      "calendarId": "demo-calendar-worklog",
+      "summary": "🔬 [widget-app] Run: pilot rollout check",
+      "start": "T-1 09:00",
+      "end": "T-1 11:00",
+      "location": "",
+      "link": "https://calendar.example.com/demo-worklog-1"
+    },
+    {
+      "calendarId": "demo-calendar-worklog",
+      "summary": "✍️ [widget-research] Draft: UX interview findings",
+      "start": "T-1 10:30",
+      "end": "T-1 12:00",
+      "location": "",
+      "link": "https://calendar.example.com/demo-worklog-2"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$comment": "Invented repository signals for demo mode, standing in for a session log, project notes, and git log. Commit times are offsets from the run date. Dates are offsets from the run date; see manifest.json.",
+  "label": "widget-app",
+  "sessionReportTail": [
+    {
+      "source": "SESSION_REPORT.md",
+      "text": "Pilot rollout check runs clean. Dashboard at /pilot."
+    },
+    {
+      "source": "SESSION_REPORT.md",
+      "text": "Pending: the UX interview findings are still unwritten."
+    },
+    {
+      "source": "SESSION_REPORT.md",
+      "text": "Pending: two PRs touch the same migration; decide which lands first."
+    }
+  ],
+  "projectNotes": [
+    {
+      "source": "TODO.md",
+      "text": "Decide which of the two migration PRs lands first."
+    },
+    {
+      "source": "notes/event-schema.md",
+      "text": "The duplicate-id fix needs a regression test."
+    }
+  ],
+  "recentCommits": [
+    {
+      "sha": "a1b2c3d",
+      "when": "T-1 16:20",
+      "subject": "[build] Pilot rollout: clean run, dashboard live"
+    },
+    {
+      "sha": "e4f5a6b",
+      "when": "T-1 11:05",
+      "subject": "[fix] Fix event schema: drop duplicate ids"
+    }
+  ],
+  "branch": "build/pilot-rollout"
+}

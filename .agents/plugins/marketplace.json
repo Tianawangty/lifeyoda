@@ -1,0 +1,23 @@
+{
+  "name": "lifeyoda",
+  "interface": {
+    "displayName": "LifeYoda",
+    "description": "Daily planning workflows for morning brief, confirmed plan application, wrapup journal, and long-horizon planning."
+  },
+  "plugins": [
+    {
+      "name": "lifeyoda",
+      "version": "1.0.0",
+      "description": "Daily planning workflows for morning brief, confirmed plan application, wrapup journal, and long-horizon planning.",
+      "source": {
+        "source": "local",
+        "path": "./plugins/lifeyoda"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

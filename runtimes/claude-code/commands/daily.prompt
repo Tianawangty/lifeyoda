@@ -1,9 +1,0 @@
-Run `workflows/morning-brief-and-plan.workflow`.
-
-Claude Code runtime:
-- Read Google Calendar directly with the configured calendar connector.
-- Read Outlook Calendar directly when available.
-- Slack is optional for messages, mentions, and app notifications; it is not required as the Outlook Calendar proxy unless private config requests it.
-- Do not write Notion or calendar entries during this command.
-- Output Morning Brief and Draft Day Plan only.
-

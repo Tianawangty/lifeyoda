@@ -1,0 +1,117 @@
+{
+  "toolkit": {
+    "name": "LifeYoda",
+    "version": "1.0.0"
+  },
+  "sourcePolicy": {
+    "lookbackToPreviousDailyPlan": true,
+    "maxLookbackDays": 7,
+    "horizonDays": 14,
+    "hardDeadlineHighlightDays": 7,
+    "maxKeyItems": 5,
+    "maxFyiItems": 3,
+    "avoidExhaustiveSearch": true
+  },
+  "week": {
+    "startsOn": "monday",
+    "workingDays": 5,
+    "note": "Defines the window the per-track budget is measured over. Without it 'this week's working hours' has no value: a Sunday-start week and a Monday-start week disagree about which days count, and 5 working days and 7 give different totals from the same workWindows."
+  },
+  "horizon": {
+    "lookaheadDays": 21,
+    "confidenceLevels": [
+      "VERIFIED",
+      "DERIVED",
+      "INFERRED"
+    ]
+  },
+  "naming": {
+    "template": "{typeEmoji} [{project}] {verb}: {object}",
+    "dedupeAnchor": "project + start time",
+    "appliesTo": [
+      "notion_schedule_table",
+      "planning_calendar"
+    ],
+    "typeEmoji": {
+      "analysis": "🔬",
+      "writing": "✍️",
+      "figures": "📈",
+      "docs": "📄",
+      "reading": "📚",
+      "job": "💼",
+      "chore": "🔧",
+      "meal": "🍽",
+      "fitness": "🏋️",
+      "meeting": "🗣"
+    }
+  },
+  "travel": {
+    "bufferMinutes": 30,
+    "virtualLocationPatterns": [
+      "zoom.us",
+      "zoomgov.com",
+      "teams.microsoft",
+      "meet.google",
+      "webex",
+      "http://",
+      "https://",
+      "online",
+      "virtual"
+    ]
+  },
+  "dailyPlan": {
+    "titleDateFormat": "EEE, MMMM d, yyyy",
+    "dateKey": "title",
+    "statusOnCreate": "Planned",
+    "focusFormat": "3-5 bullet points",
+    "randomDailyEmoji": true,
+    "emojiPool": [
+      "🎁",
+      "🌱",
+      "🧭",
+      "🪐",
+      "🌤",
+      "🍀",
+      "🧩",
+      "🛶",
+      "🔭",
+      "🪁",
+      "🌾",
+      "🏔",
+      "🎈",
+      "🧵",
+      "🪴",
+      "🌊",
+      "🛎",
+      "🎐",
+      "🧊",
+      "🪄"
+    ],
+    "templatePath": "templates/daily-plan-page.md",
+    "sections": [
+      "⏰ Schedule",
+      "✅ Today's checklist",
+      "📌 Notes"
+    ]
+  },
+  "dailyJournal": {
+    "templatePath": "templates/daily-journal-page.md",
+    "iconWhenDone": "✅",
+    "iconWhenPartial": "📓",
+    "sections": [
+      "What got done",
+      "Not done → carry forward",
+      "Extra bonus",
+      "Tomorrow's seeds",
+      "Time-on-task"
+    ]
+  },
+  "focusHours": {
+    "strategy": [
+      "worklog_calendars",
+      "git_commits",
+      "ask_user"
+    ],
+    "alwaysConfirm": true
+  }
+}

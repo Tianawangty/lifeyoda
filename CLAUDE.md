@@ -1,109 +1,87 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Claude Code specifics for this repository. **Read `CONTRIBUTING.md` first** — it carries
+the repository layout, the command loop, config resolution, the four non-obvious facts
+about the Notion/calendar model, the naming protocol, and the read-only boundaries.
+Nothing in that file is repeated here.
 
-## What this repo is
+`AGENTS.md` is the Codex counterpart to this file.
 
-LifeYoda is a prose-only workflow kit for a daily planning assistant. There is no build, no test suite, and no executable code — the "programs" are markdown workflows that an agent reads and follows, plus JSON config that parameterizes them.
+## Command surface
 
-Two runtimes share the same workflows:
-
-- **Claude Code** — manual, via slash commands in `.claude/commands/`. Reads calendars directly.
-- **Codex Desktop** — scheduled at 07:30, prompts in `runtimes/codex-desktop/`. Uses Slack as an Outlook proxy because a school Outlook account can fail to connect directly behind extra security prompts. Not verified yet.
-
-## Commands
-
-Run from this repo directory (they are project-level slash commands).
-
-| Command | Reads | Writes |
-| --- | --- | --- |
-| `/daily` | `workflows/morning-brief-and-plan.md` | nothing |
-| `/apply-plan` | `workflows/apply-daily-plan.md` | one Notion Daily Plan row + planning-calendar blocks |
-| `/wrapup` | `workflows/wrapup-journal.md` | Daily Plan status + one Daily Journal |
-
-The sequence is always `/daily` → user confirms → `/apply-plan`, and `/wrapup` at end of day. `/daily` never writes; `/apply-plan` never runs without a confirmed draft in the same conversation.
-
-Verify config health with:
-
-```bash
-python3 -c "import json;d=json.load(open('private/local.json'));print(sorted(d))"
-git check-ignore -v private/local.json    # must print a match
-```
-
-## Config resolution
-
-Every workflow resolves private config in this order, first hit wins:
-
-1. `$LIFEYODA_CONFIG`
-2. `~/.lifeyoda/local.json`
-3. `private/local.json`
-
-`config/public.defaults.json` is committed and holds the toolkit's generic behaviour — naming protocol, emoji pool, section names, source limits. `config/local.schema.json` is the authority on the private config's shape (`additionalProperties: false` at the top level, so a typo'd key is a hard error, not a silent ignore).
-
-`private/**` is gitignored. **Real Notion IDs, calendar IDs, and local repo paths live only there.** Never inline them into a workflow, a doc, or this file. `private.example/` mirrors the structure with placeholders.
-
-## Architecture
-
-The three workflows form a loop with Notion as the source of truth and a single write-only planning calendar:
+Claude Code enters through `plugins/lifeyoda/commands/*.md`. Installed, the commands are
+namespaced. The core daily loop is four commands:
 
 ```
-/daily     read calendars, checklist sources, active repo,
-           previous Daily Plan + Journal
-             → Morning Brief
-             → ONE round of questions
-             → Draft Day Plan            (nothing written)
-
-/apply-plan  Notion Daily Plan row  +  planning calendar blocks
-
-/wrapup    Daily Plan Status → Done/Partial
-           Daily Journal (icon ✅/📓, linked both ways)
+/lifeyoda:daily          Morning Brief + Draft Day Plan   (read-only)
+/lifeyoda:apply-planner  write the confirmed plan
+/lifeyoda:wrapup         reconcile and journal
+/lifeyoda:horizon        long-horizon view                (read-only)
 ```
 
-Four facts that are not obvious from any single file:
-
-**1. The Daily Plan's date key is the title, not the `Date` column.** `Date` is a `created_time` property — read-only, automatically stamped when the page is created. Look rows up by title (`Wed, June 17, 2026`). A `Date` that disagrees with the title means the row was backfilled after the fact. That is a deliberate signal. Never try to correct it.
-
-**2. Completion status is not on the calendar.** A calendar records what was *scheduled*. Whether it got *done* lives in the Daily Plan's `✅ Today's checklist` checkboxes and the Journal's `Not done → carry forward` section. The morning brief reads those two; the calendar is only corroboration (four blocks scheduled but three items checked is a gap worth naming).
-
-**3. Calendar dedupe reads the destination.** Before writing, `/apply-plan` lists the planning calendar for that date and compares on start time plus the `[project]` tag. No sync state is stored in Notion — no event id, no synced checkbox. This is why the naming protocol matters: the `[project]` tag is the dedupe anchor. The predecessor tool stored ids on tracker rows instead, which covered only tasks that happened to be tracker rows and went stale whenever an event was deleted by hand.
-
-**4. Outlook lies about time zones.** `outlook_calendar_search` labels its times `UTC` but returns wall-clock strings that are already local. A class returning `12:35` with body text `08:35 AM` is an 08:35 EDT event. The config flags this with `returnsWallClockAsUtc: true`. Always render in the config timezone with the abbreviation shown.
-
-## Naming protocol
-
-Schedule-table rows and calendar events use one format, defined in `naming.template`:
+Two supporting commands stay outside that loop:
 
 ```
-{typeEmoji} [{project}] {verb}: {object}
+/lifeyoda:setup          create/adopt databases, choose sources, write config
+/lifeyoda:doctor         validate config, database shape, calendars, sources
 ```
 
-`typeEmoji` comes from `naming.typeEmoji`. `[project]` is the dedupe anchor and must stay stable even if someone edits the description by hand. Titles must survive phone truncation — emoji and project tag readable in the first ~25 characters.
+This mirrors `AGENTS.md` by role, not by exact entry syntax. The shared product facts
+belong in `CONTRIBUTING.md`; this file only records what is different about Claude Code.
 
-## Read-only boundaries
+There is no unnamespaced source-checkout command surface. Working on this repository means
+installing the plugin like any other user, which is what keeps the install path honest —
+a broken install shows up the same day rather than weeks later.
 
-- The planning calendar is the **only** writable calendar. Every other calendar is read-only, and calendar events are never read back into Notion.
-- Everything under `destinations.privateReadOnly` is a signal source that must never be written.
-- Task trackers, course databases, and My Tasks-style scratch lists are out of scope entirely. Ad hoc errands are collected by asking during `/daily`, not from a database.
+## Locating packaged files
 
-## Repo state notes
+Command files address packaged files through `${CLAUDE_PLUGIN_ROOT}`:
 
-- Private repository. Two branches: `main` (stable) and `dev` (working). Work branches off `dev`.
-- `runtimes/claude-code/` is a stale scaffold from before the commands were built: `plugin.json` sits at the wrong path and its `commands/*.prompt` files are not loadable. Left in place as the seed for future packaging. `.claude/commands/*.md` is what actually runs.
-- A `PreToolUse:Write` hook in the user's Claude Code settings blocks new `.md` files outside an allowlist; this repo path is whitelisted. Local specifics are in `private/NOTES.md`.
-- `LICENSE` still says no license is chosen. That blocks public release.
+```
+${CLAUDE_PLUGIN_ROOT}/workflows/morning-brief-and-plan.md
+${CLAUDE_PLUGIN_ROOT}/config/public.defaults.json
+```
 
-## Next steps
+Each command also carries a fallback for the case where it has been migrated into a Codex
+skill, expressed relative to the skill's own directory (`../../workflows/…`). A skill sits
+at `<plugin>/skills/<name>/`, so the correct depth is two levels, not three. A wrong depth
+here fails silently: the read simply finds nothing.
 
-Owner-specific context for all of these — which institution, which tracker, which repos — lives in `private/NOTES.md`.
+## Installs are keyed on the plugin version
 
-**Long-horizon layer** — not built. The intent is to work backwards from a target completion date through quarter, month, week, and day, so daily plans inherit from a long-horizon schedule anchored on the organisation's published calendar. Building it requires deciding, together:
+The cache directory is named after the version
+(`~/.claude/plugins/cache/lifeyoda/lifeyoda/<version>/`), and an install at a version
+already present is skipped without a word. `/plugin marketplace update` refreshes
+marketplace metadata only, not the installed plugin.
 
-- the horizon config shape (completion date, period bounds, milestones, hard deadlines)
-- whether the owner's project tracker becomes writable again, and whether a `Scheduled Date` property is reintroduced for cross-day scheduling — both were deliberately deferred to this layer
-- how a long-horizon deadline propagates down into `/daily` without drowning the top 3-5 signal
+So any change under `plugins/lifeyoda/` needs the version bumped, or Claude Code keeps
+running the old text. Four files must agree:
 
-**Repos not yet wired** — additional project repos are listed in `private/NOTES.md`. Each needs an entry in `sources.activeProject.secondary` and `sources.projectMapping`. One stale course mapping was dropped; the corresponding Notion multi-select option was left alone so historical journal rows stay intact.
+- `plugins/lifeyoda/.claude-plugin/plugin.json`
+- `plugins/lifeyoda/.codex-plugin/plugin.json`
+- `.claude-plugin/marketplace.json` (two lines)
+- `plugins/lifeyoda/config/public.defaults.json`
 
-**Packaging** — deferred by explicit request. When it happens: move `.claude/commands/` to `commands/`, add `.claude-plugin/plugin.json` and `marketplace.json`, and move private config out of the repo to `~/.lifeyoda/` (a marketplace-installed plugin's directory is overwritten on update).
+`scripts/check.py` enforces this. Codex does not have the problem —
+`.agents/plugins/marketplace.json` pins no version and `codex plugin add` re-copies
+unconditionally.
 
-**Codex Desktop** — prompts exist but are unverified, and three of them hardcode this repo's absolute path.
+## Marketplace surface
+
+`.claude-plugin/marketplace.json` declares the marketplace and points at
+`./plugins/lifeyoda`. Install:
+
+```
+/plugin marketplace add Tianawangty/lifeyoda
+/plugin install lifeyoda@lifeyoda
+```
+
+A marketplace added from a local directory registers as `"source": "directory"` in
+`~/.claude/plugins/known_marketplaces.json`. That is a different code path from the GitHub
+install above, so a local install proves nothing about whether the published one works.
+
+## Shell environment
+
+Claude Code's Bash tool runs a **non-interactive login zsh**. It reads `~/.zshenv` and
+`~/.zprofile` and never sources `~/.zshrc`. Any environment variable a workflow depends on
+— including a `$VAR` used as a repo `localPath` — must therefore be defined in `.zshenv`.

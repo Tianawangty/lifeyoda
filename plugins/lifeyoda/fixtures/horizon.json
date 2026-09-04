@@ -1,0 +1,136 @@
+{
+  "terminalGoal": {
+    "label": "Widget app v2 released",
+    "date": "2026-12-04"
+  },
+  "terms": [
+    {
+      "name": "Demo quarter",
+      "start": "2026-05-11",
+      "end": "2026-08-07",
+      "examStart": "2026-08-10",
+      "examEnd": "2026-08-14",
+      "breaks": [
+        {
+          "name": "Demo holiday",
+          "start": "2026-07-03",
+          "end": "2026-07-03"
+        }
+      ],
+      "source": "demo team calendar"
+    }
+  ],
+  "hardDeadlines": [
+    {
+      "id": "hd-cfp",
+      "date": "2026-06-24",
+      "label": "Conference CFP closes",
+      "source": "demo conference site",
+      "confidence": "VERIFIED",
+      "blocks": [
+        "research-2"
+      ]
+    },
+    {
+      "id": "hd-release",
+      "date": "2026-12-04",
+      "label": "v2 release date",
+      "source": "demo release plan",
+      "confidence": "VERIFIED",
+      "blocks": []
+    },
+    {
+      "id": "hd-internal-freeze",
+      "date": "2026-10-16",
+      "label": "Code freeze before release",
+      "source": "derived from hd-release working backwards",
+      "confidence": "DERIVED",
+      "blocks": [
+        "hd-submission"
+      ]
+    }
+  ],
+  "tracks": [
+    {
+      "id": "build",
+      "label": "Shipping the app",
+      "weightPct": 60,
+      "projects": [
+        "widget-app"
+      ],
+      "milestones": [
+        {
+          "id": "build-1",
+          "label": "Pilot experiment shipped to 5% of users",
+          "targetDate": "2026-06-12",
+          "dependsOn": [],
+          "status": "done",
+          "evidence": "The pilot is live and the dashboard shows traffic"
+        },
+        {
+          "id": "build-2",
+          "label": "A/B test rollout complete",
+          "targetDate": "2026-06-14",
+          "dependsOn": [
+            "build-1"
+          ],
+          "status": "planned",
+          "evidence": "Both arms running at full allocation for a week"
+        },
+        {
+          "id": "build-3",
+          "label": "V2 feature set code complete",
+          "targetDate": "2026-08-28",
+          "dependsOn": [
+            "build-2"
+          ],
+          "status": "planned",
+          "evidence": "Every v2 ticket closed and merged to main"
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "User research",
+      "weightPct": 40,
+      "projects": [
+        "widget-research"
+      ],
+      "milestones": [
+        {
+          "id": "research-1",
+          "label": "UX interview findings written up",
+          "targetDate": "2026-06-19",
+          "dependsOn": [
+            "build-1"
+          ],
+          "status": "planned",
+          "evidence": "Two pages a designer can act on without the transcripts"
+        },
+        {
+          "id": "research-2",
+          "label": "Conference talk submitted",
+          "targetDate": "2026-06-23",
+          "dependsOn": [
+            "research-1"
+          ],
+          "status": "planned",
+          "evidence": "Submission confirmation email"
+        },
+        {
+          "id": "research-3-confirm-derived",
+          "label": "Confirm the code-freeze date with the team",
+          "targetDate": "2026-09-25",
+          "dependsOn": [],
+          "status": "planned",
+          "evidence": "The team agreed in writing, so hd-internal-freeze stops being DERIVED"
+        }
+      ]
+    }
+  ],
+  "cadence": {
+    "weeklyReview": "Friday afternoon",
+    "monthlyReview": "first week of each month"
+  },
+  "lookaheadDays": 21
+}

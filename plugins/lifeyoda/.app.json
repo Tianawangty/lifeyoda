@@ -1,0 +1,28 @@
+{
+  "apps": {
+    "notion": {
+      "id": "asdk_app_69c18c28f1188191bf5b8445c4ab0a2e",
+      "required": false
+    },
+    "gmail": {
+      "id": "connector_2128aebfecb84f64a069897515042a44",
+      "required": false
+    },
+    "slack": {
+      "id": "asdk_app_69a1d78e929881919bba0dbda1f6436d",
+      "required": false
+    },
+    "google-calendar": {
+      "id": "connector_947e0d954944416db111db556030eea6",
+      "required": false
+    },
+    "outlook-calendar": {
+      "id": "connector_1p_fd0f4f41caa88191a9456514bbffa06d",
+      "required": false
+    },
+    "github": {
+      "id": "connector_76869538009648d5b282a4bb21c3d157",
+      "required": false
+    }
+  }
+}

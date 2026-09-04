@@ -1,0 +1,45 @@
+{
+  "$comment": "Invented mail and Slack messages for demo mode. No real inbox was read to produce this file. Addresses use example.com, reserved for documentation. Times are offsets from the run date; see manifest.json. Text may contain {T+n} or {milestone-id} tokens — resolve them to real dates before quoting, so a quoted sentence never names a weekday or date that the run date has moved past.",
+  "gmail": {
+    "mode": "label_only",
+    "messages": [
+      {
+        "label": "demo-label-advising",
+        "from": "teammate@example.com",
+        "subject": "Which PR should land first",
+        "received": "T-1 18:40",
+        "snippet": "Two of them touch the same migration, and I need your answer before {T+0}.",
+        "asking_sentence": "Can you tell me before {T+0} which of the two PRs should land first?",
+        "link": "https://mail.example.com/demo-thread-1"
+      },
+      {
+        "label": "demo-label-deadlines",
+        "from": "conference@example.com",
+        "subject": "Talk submissions close {hd-cfp}",
+        "received": "T-2 09:12",
+        "snippet": "Submissions close at 23:59 on {hd-cfp}.",
+        "asking_sentence": "Submissions close at 23:59 on {hd-cfp}.",
+        "link": "https://mail.example.com/demo-thread-2"
+      }
+    ]
+  },
+  "slack": {
+    "messages": [
+      {
+        "kind": "dm",
+        "from": "Teammate",
+        "sent": "T+0 08:05",
+        "text": "Pushed the cleaned event schema to staging. Field names changed.",
+        "link": "https://slack.example.com/demo-message-1"
+      },
+      {
+        "kind": "mention",
+        "channel": "#demo-research",
+        "from": "Organizer",
+        "sent": "T-1 20:30",
+        "text": "Reminder that the session for {T+1} is the onboarding interviews.",
+        "link": "https://slack.example.com/demo-message-2"
+      }
+    ]
+  }
+}

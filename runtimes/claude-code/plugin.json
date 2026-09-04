@@ -1,6 +1,0 @@
-{
-  "name": "lifeyoda",
-  "version": "0.1.0",
-  "description": "Daily planning workflows for morning brief, confirmed plan application, and wrapup journal.",
-  "commands": "./commands"
-}
